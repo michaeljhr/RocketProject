@@ -2,31 +2,31 @@
     "PlayerMove": {
         "checkpoints": [
             {
-                "steps": 499969,
-                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-499969.onnx",
-                "reward": null,
-                "creation_time": 1719537116.282908,
+                "steps": 499985,
+                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-499985.onnx",
+                "reward": 0.5238095238095238,
+                "creation_time": 1719538500.0739555,
                 "auxillary_file_paths": [
-                    "results\\ppo\\PlayerMove\\PlayerMove-499969.pt"
+                    "results\\ppo\\PlayerMove\\PlayerMove-499985.pt"
                 ]
             },
             {
-                "steps": 500033,
-                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-500033.onnx",
-                "reward": null,
-                "creation_time": 1719537116.3529716,
+                "steps": 500005,
+                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-500005.onnx",
+                "reward": 0.525691699604743,
+                "creation_time": 1719538500.1416237,
                 "auxillary_file_paths": [
-                    "results\\ppo\\PlayerMove\\PlayerMove-500033.pt"
+                    "results\\ppo\\PlayerMove\\PlayerMove-500005.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 500033,
+            "steps": 500005,
             "file_path": "results\\ppo\\PlayerMove.onnx",
-            "reward": null,
-            "creation_time": 1719537116.3529716,
+            "reward": 0.525691699604743,
+            "creation_time": 1719538500.1416237,
             "auxillary_file_paths": [
-                "results\\ppo\\PlayerMove\\PlayerMove-500033.pt"
+                "results\\ppo\\PlayerMove\\PlayerMove-500005.pt"
             ]
         }
     },

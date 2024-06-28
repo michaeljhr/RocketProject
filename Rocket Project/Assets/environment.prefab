@@ -265,7 +265,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  speed: 20
+  speed: 50
   successMaterial: {fileID: 2100000, guid: e85d621ed7bdfa44791f124994dd4f9d, type: 2}
   failMaterial: {fileID: 2100000, guid: 05d731fdf308e32448dc091219f1b3b5, type: 2}
   platform: {fileID: 313734552734752551}
