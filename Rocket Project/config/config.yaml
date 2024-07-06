@@ -1,0 +1,33 @@
+behaviors:
+  PlayerMove:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 10 # number of experiences used per training update
+      buffer_size: 100 # number of experiences stored in the replay buffer; the larger the buffer, the stable but slower the training
+      learning_rate: 3.0e-4 # step size for updating the model parameters; the smaller the learning rate, the slower but more stable the training
+      beta: 5.0e-4 # strength of the entropy regularization term; the larger the beta, the more exploration
+      epsilon: 0.2 # probability of selecting a random action during training; the larger the epsilon, the more exploration
+      lambd: 0.99 # (0-1) the higher, the less biased but more variable the estimate of the advantage function
+      # num_epochs: 3 # number of times the model is trained on the replay buffer
+      learning_rate_schedule: linear # learning rate schedule; options: constant, linear, exponential Note: decrease the learning rate over time to stabilize training
+    network_settings:
+      normalize: false # normalize the input states
+      hidden_units: 128 # number of units in the hidden layers
+      num_layers: 2 # number of hidden layers
+    reward_signals:
+      extrinsic:
+        gamma: 0.99 # (0-1) discount factor for future rewards; the larger the gamma, the more importance the agent places on future rewards
+        strength: 1.0 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
+      # gail:
+      #   strength: 0.5 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
+      #   demo_path: "demonstrations/aimove.demo"
+    # behavioral_cloning:
+    #   demo_path: "demonstrations/aimove.demo"
+    #   strength: 0.5 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
+    max_steps: 500000 # maximum number of steps in a given training session
+    time_horizon: 64 # number of steps the agent considers before making a decision
+    summary_freq: 10000 # how often to save training statistics
+
+# HOW TO USE THIS FILE
+# mlagents-learn config/config.yaml --run-id=MoveToGoal (--force, --train, --resume)
+# visual stats: tensorboard --logdir results

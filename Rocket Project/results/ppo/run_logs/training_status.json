@@ -2,31 +2,22 @@
     "PlayerMove": {
         "checkpoints": [
             {
-                "steps": 499985,
-                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-499985.onnx",
-                "reward": 0.5238095238095238,
-                "creation_time": 1719538500.0739555,
+                "steps": 278003,
+                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-278003.onnx",
+                "reward": null,
+                "creation_time": 1719629421.0382462,
                 "auxillary_file_paths": [
-                    "results\\ppo\\PlayerMove\\PlayerMove-499985.pt"
-                ]
-            },
-            {
-                "steps": 500005,
-                "file_path": "results\\ppo\\PlayerMove\\PlayerMove-500005.onnx",
-                "reward": 0.525691699604743,
-                "creation_time": 1719538500.1416237,
-                "auxillary_file_paths": [
-                    "results\\ppo\\PlayerMove\\PlayerMove-500005.pt"
+                    "results\\ppo\\PlayerMove\\PlayerMove-278003.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 500005,
+            "steps": 278003,
             "file_path": "results\\ppo\\PlayerMove.onnx",
-            "reward": 0.525691699604743,
-            "creation_time": 1719538500.1416237,
+            "reward": null,
+            "creation_time": 1719629421.0382462,
             "auxillary_file_paths": [
-                "results\\ppo\\PlayerMove\\PlayerMove-500005.pt"
+                "results\\ppo\\PlayerMove\\PlayerMove-278003.pt"
             ]
         }
     },

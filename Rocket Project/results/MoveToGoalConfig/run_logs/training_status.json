@@ -1,0 +1,29 @@
+{
+    "PlayerMove": {
+        "checkpoints": [
+            {
+                "steps": 119090,
+                "file_path": "results\\MoveToGoalConfig\\PlayerMove\\PlayerMove-119090.onnx",
+                "reward": null,
+                "creation_time": 1720298540.0731134,
+                "auxillary_file_paths": [
+                    "results\\MoveToGoalConfig\\PlayerMove\\PlayerMove-119090.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 119090,
+            "file_path": "results\\MoveToGoalConfig\\PlayerMove.onnx",
+            "reward": null,
+            "creation_time": 1720298540.0731134,
+            "auxillary_file_paths": [
+                "results\\MoveToGoalConfig\\PlayerMove\\PlayerMove-119090.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.3.1+cpu"
+    }
+}
