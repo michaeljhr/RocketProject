@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class RocketLandingManual : MonoBehaviour
 {
+    [Header("Object References")]
+    public GameObject mainThrusterParticles;
+    public GameObject eastThrusterParticles;
+    public GameObject westThrusterParticles;
+    public GameObject northThrusterParticles;
+    public GameObject southThrusterParticles;
+
     [Header("Rocket Parameters")]
     public float mass = 22200;
     public float thrust = 0;
