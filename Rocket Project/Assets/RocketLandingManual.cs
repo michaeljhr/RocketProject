@@ -34,20 +34,27 @@ public class RocketLandingManual : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         fuel = startingFuel;
-        rb.mass = mass + fuel;
-        rb.drag = drag;
-        rb.angularDrag = angularDrag;
+        UpdatePhysics();
     }
 
     // Update is called once per frame
     void Update()
     {
         ChangeThrust();
+        UpdatePhysics();
     }
 
     void FixedUpdate() {
         ApplyThrust();
         RotationInput();
+    }
+
+    void UpdatePhysics() {
+        rb.mass = mass + fuel;
+        rb.drag = drag;
+        rb.angularDrag = angularDrag;
+
+        Physics.gravity = new Vector3(0, -gravity, 0);
     }
 
     private void ApplyThrust() {
@@ -59,7 +66,7 @@ public class RocketLandingManual : MonoBehaviour
             if (fuel < 0) {
                 fuel = 0;
             }
-        } else {
+        } else if (fuel <= 0) {
             Debug.Log("Out of fuel");
         }
     }
