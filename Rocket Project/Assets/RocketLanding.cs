@@ -106,7 +106,7 @@ public class RocketLanding : Agent
 
         // Add Forces
         Vector3 thrustVector = transform.up * thrust;
-        Debug.Log($"Adding thrust: {thrustVector}");
+        // Debug.Log($"Adding thrust: {thrustVector}");
         rb.AddForce(thrustVector);
     }
 
