@@ -37,13 +37,25 @@ Main Thruster:
 
 public class RocketLanding : Agent
 {
+    [Header("Object References")]
+    public GameObject mainThrusterParticles;
+    public Transform eastThruster;
+    public GameObject eastThrusterParticles;
+    public Transform westThruster;
+    public GameObject westThrusterParticles;
+    public Transform northThruster;
+    public GameObject northThrusterParticles;
+    public Transform southThruster;
+    public GameObject southThrusterParticles;
     // [TextArea(5, 10)]
     // public string description;
     [Header("Rocket Parameters")]
     public float mass = 22200;
     public float thrust = 0;
+    public float steerThrust = 1000;
     public float maxThrust = 1500000;
     public float startingFuel = 200000;
+    public float thrustIncreaseRate = 1000;
     public float fuelBurnRate = 1000;
     public float fuel; // not to be editted in inspector
 
@@ -54,12 +66,44 @@ public class RocketLanding : Agent
     public float gravity = 9.81f;
     public float drag = 0.1f;
     public float angularDrag = 0.1f;
+    public float torqueAmount = 1000;
 
     [Header("Training Parameters")]
     public Material successMaterial;
     public Material failMaterial;
     public MeshRenderer platformMesh;
     Rigidbody rb;
+
+    float mainThrust = 0;
+    float rocketLandingVelocity = 0.0f;
+
+    void Fail() {
+        Debug.Log("Crashed");
+        SetReward(-1f);
+        platformMesh.material = failMaterial;
+        EndEpisode();
+    }
+
+    void Success() {
+        Debug.Log("Landed");
+        SetReward(1f);
+        platformMesh.material = successMaterial;
+        EndEpisode();
+    }
+
+    void FixedUpdate() {
+        rb.mass = mass + fuel;
+        rb.drag = drag;
+        rb.angularDrag = angularDrag;
+
+        Physics.gravity = new Vector3(0, -gravity, 0);
+        // Debug.Log("Fuel: " + fuel);
+        rocketLandingVelocity = rb.velocity.y;
+
+        if (platform.localPosition.y > transform.localPosition.y) {
+            Fail();
+        }
+    }
 
     public override void OnEpisodeBegin()
     {
@@ -71,6 +115,10 @@ public class RocketLanding : Agent
         rb.angularDrag = angularDrag;
 
         // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
+        transform.localPosition = new Vector3(0, 1000f, 0);
+        transform.localRotation = Quaternion.identity;
+        rb.velocity = Vector3.zero;
+
         // target.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
     }
 
@@ -100,23 +148,63 @@ public class RocketLanding : Agent
         int rotateLeft = actions.DiscreteActions[4];
         int rotateRight = actions.DiscreteActions[5];
 
+        // Rotate Rocket
+        if (rotateNorth == 1) {
+            rb.AddForceAtPosition(Vector3.right * steerThrust, northThruster.position);
+        }
+        if (rotateSouth == 1) {
+            rb.AddForceAtPosition(Vector3.left * steerThrust, southThruster.position);
+        }
+        if (rotateWest == 1) {
+            rb.AddForceAtPosition(Vector3.forward * steerThrust, westThruster.position);
+        }
+        if (rotateEast == 1) {
+            rb.AddForceAtPosition(Vector3.back * steerThrust, eastThruster.position);
+        }
+
+        if (rotateLeft == 1) {
+            rb.AddTorque(Vector3.up * torqueAmount);
+        }
+        if (rotateRight == 1) {
+            rb.AddTorque(Vector3.down * torqueAmount);
+        }
+
         // Get Continuous Actions
-        float mainThrust = actions.ContinuousActions[0];
+        if (actions.ContinuousActions[0] > 0) {
+            mainThrust = actions.ContinuousActions[0];
+        }
         thrust = Mathf.Clamp(mainThrust, 0, maxThrust);
 
         // Add Forces
-        Vector3 thrustVector = transform.up * thrust;
-        // Debug.Log($"Adding thrust: {thrustVector}");
-        rb.AddForce(thrustVector);
+        if (fuel > 0 && thrust > 0) {
+            Vector3 thrustVector = transform.up * thrust;
+            rb.AddForce(thrustVector);
+            fuel -= fuelBurnRate * Time.deltaTime;
+            rb.mass = mass + fuel;
+            if (fuel < 0) {
+                fuel = 0;
+            }
+        } else if (fuel <= 0) {
+            Debug.Log("Out of fuel");
+        }
     }
 
     private void OnCollisionEnter(Collision other) {
+
+        Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
+
+        if (rocketLandingVelocity < -3.0f) {
+            Fail();
+        } else {
+            Success();
+        }
+
         // if (other.collider.CompareTag("goal")) {
         //     Debug.Log("Goal");
         //     SetReward(1f);
         //     platformMesh.material = successMaterial;
         //     EndEpisode();
-        // } else if (other.collider.CompareTag("wall")) {
+        // } else if (other.collider.CompareTag("wall")) {          
         //     Debug.Log("Wall");
         //     SetReward(-1f);
         //     platformMesh.material = failMaterial;
@@ -139,8 +227,8 @@ public class RocketLanding : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
 
         if (Input.GetKey(KeyCode.R)) {
-            Debug.Log($"Adding thrust: {1000 * Time.deltaTime}");
-            thrust += 1000 * Time.deltaTime;
+            Debug.Log($"Adding thrust: {thrustIncreaseRate * Time.deltaTime}");
+            thrust += thrustIncreaseRate * Time.deltaTime;
 
             if (thrust > maxThrust) {
                 thrust = maxThrust;
@@ -148,8 +236,8 @@ public class RocketLanding : Agent
 
             continuousActionsOut[0] = thrust;
         } else if (Input.GetKey(KeyCode.F)) {
-            Debug.Log($"Removing thrust: {1000 * Time.deltaTime}");
-            thrust -= 1000 * Time.deltaTime;
+            Debug.Log($"Removing thrust: {thrustIncreaseRate * Time.deltaTime}");
+            thrust -= thrustIncreaseRate * Time.deltaTime;
 
             if (thrust < 0) {
                 thrust = 0;
