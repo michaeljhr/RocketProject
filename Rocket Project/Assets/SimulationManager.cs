@@ -36,7 +36,7 @@ public class SimulationManager : MonoBehaviour
     void Start()
     {
         originalPosition = rocket.transform;
-        originalRotation = rocket.transform.rotation;
+        originalRotation = rocket.transform.localRotation;
         originalVelocity = rocket.GetComponent<Rigidbody>().velocity;
 
         ResetRocket();
@@ -50,8 +50,8 @@ public class SimulationManager : MonoBehaviour
 
     public void ResetRocket() {
         if (useInitialSpawn) {
-            rocket.transform.position = new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
-            rocket.transform.rotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
+            rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
+            rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
             rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
         }
         if (initialMass.text != "") {

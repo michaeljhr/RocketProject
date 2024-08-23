@@ -30336,6 +30336,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 080f71e42c04005489579bb473998303, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1557899358530053668}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 080f71e42c04005489579bb473998303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 446743087335112606}
   m_SourcePrefab: {fileID: 100100000, guid: 080f71e42c04005489579bb473998303, type: 3}
 --- !u!4 &1129793605386316043 stripped
 Transform:
@@ -30441,8 +30444,8 @@ MonoBehaviour:
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
-  m_InferenceDevice: 0
-  m_BehaviorType: 1
+  m_InferenceDevice: 1
+  m_BehaviorType: 0
   m_BehaviorName: RocketLanding
   TeamId: 0
   m_UseChildSensors: 1
@@ -30519,6 +30522,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
+--- !u!114 &446743087335112606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5898041306640375669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Record: 0
+  NumStepsToRecord: 0
+  DemonstrationName: landing
+  DemonstrationDirectory: demos
 --- !u!4 &6526241414308758991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 080f71e42c04005489579bb473998303, type: 3}

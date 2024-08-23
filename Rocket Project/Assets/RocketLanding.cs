@@ -77,6 +77,11 @@ public class RocketLanding : Agent
     float mainThrust = 0;
     float rocketLandingVelocity = 0.0f;
 
+    private float lastRotationX = 0;
+    private float lastRotationY = 90;
+    private float lastRotationZ = 0;
+    private float lastPositionY = 0;
+
     void Fail() {
         Debug.Log("Crashed");
         SetReward(-1f);
@@ -100,9 +105,39 @@ public class RocketLanding : Agent
         // Debug.Log("Fuel: " + fuel);
         rocketLandingVelocity = rb.velocity.y;
 
+        // Check if rocket went up
+        if (lastPositionY < transform.localPosition.y) {
+            Fail();
+        }
+
+        // Check if rocket is below platform
         if (platform.localPosition.y > transform.localPosition.y) {
             Fail();
         }
+
+        // Check if rocket is rotating away from upright position
+        if ((transform.localRotation.x > 0 && transform.localRotation.x > lastRotationX + 0.1f) || (transform.localRotation.x < 0 && transform.localRotation.x < lastRotationX - 0.1f)) {
+            SetReward(-1f);
+        } else {
+            SetReward(1f);
+        }
+
+        if ((transform.localRotation.y > 0 && transform.localRotation.y > lastRotationY + 0.1f) || (transform.localRotation.y < 0 && transform.localRotation.y < lastRotationY - 0.1f)) {
+            SetReward(-1f);
+        } else {
+            SetReward(1f);
+        }
+
+        if ((transform.localRotation.z > 0 && transform.localRotation.z > lastRotationZ + 0.1f) || (transform.localRotation.z < 0 && transform.localRotation.z < lastRotationZ - 0.1f)) {
+            SetReward(-1f);
+        } else {
+            SetReward(1f);
+        }
+
+        lastRotationX = transform.localRotation.x;
+        lastRotationY = transform.localRotation.y;
+        lastRotationZ = transform.localRotation.z;
+        lastPositionY = transform.localPosition.y;
     }
 
     public override void OnEpisodeBegin()
@@ -116,8 +151,11 @@ public class RocketLanding : Agent
 
         // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
         transform.localPosition = new Vector3(0, 1000f, 0);
-        transform.localRotation = Quaternion.identity;
         rb.velocity = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        lastRotationX = 0;
+        lastRotationY = 90;
+        lastRotationZ = 0;
 
         // target.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
     }
@@ -193,7 +231,7 @@ public class RocketLanding : Agent
 
         Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
 
-        if (rocketLandingVelocity < -3.0f) {
+        if (rocketLandingVelocity < -5.0f) {
             Fail();
         } else {
             Success();
