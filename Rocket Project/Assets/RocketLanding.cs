@@ -77,14 +77,17 @@ public class RocketLanding : Agent
     float mainThrust = 0;
     float rocketLandingVelocity = 0.0f;
 
+    float lastVerticalVelocity = 0;
+
     private float lastRotationX = 0;
     private float lastRotationY = 90;
     private float lastRotationZ = 0;
     private float lastPositionY = 0;
 
     void Fail() {
-        Debug.Log("Crashed");
-        SetReward(-1f);
+        float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
+        // Debug.Log("Crashed, penalty: " + penalty);
+        SetReward(penalty * 10);
         platformMesh.material = failMaterial;
         EndEpisode();
     }
@@ -105,39 +108,61 @@ public class RocketLanding : Agent
         // Debug.Log("Fuel: " + fuel);
         rocketLandingVelocity = rb.velocity.y;
 
+        // Reward for being closer to zero velocity
+        if (rocketLandingVelocity > -5.0f && rocketLandingVelocity <= 0) {
+            SetReward(1f - Mathf.Abs(rocketLandingVelocity));
+        }
+
         // Check if rocket went up
         if (lastPositionY < transform.localPosition.y) {
             Fail();
         }
 
         // Check if rocket is below platform
-        if (platform.localPosition.y > transform.localPosition.y) {
+        if (platform.localPosition.y - 10.0f > transform.localPosition.y) {
+            Debug.Log("Below platform");
+            SetReward(-50f);
             Fail();
         }
 
+        // Check if rocket is falling too fast
+        if (transform.localPosition.y < 500f) {
+            if (rb.velocity.y < lastVerticalVelocity) {
+                SetReward(-1f);
+
+                if (rb.velocity.y < -30.0f) {
+                    Fail();
+                }
+            } else {
+                Debug.Log($"Rocket is slowing down, velocity: {rb.velocity.y} > {lastVerticalVelocity}");
+                SetReward(25f);
+            }
+        }
+
         // Check if rocket is rotating away from upright position
-        if ((transform.localRotation.x > 0 && transform.localRotation.x > lastRotationX + 0.1f) || (transform.localRotation.x < 0 && transform.localRotation.x < lastRotationX - 0.1f)) {
-            SetReward(-1f);
-        } else {
-            SetReward(1f);
-        }
+        // if ((transform.localRotation.x > 0 && transform.localRotation.x > lastRotationX + 0.1f) || (transform.localRotation.x < 0 && transform.localRotation.x < lastRotationX - 0.1f)) {
+        //     SetReward(-1f);
+        // } else {
+        //     SetReward(1f);
+        // }
 
-        if ((transform.localRotation.y > 0 && transform.localRotation.y > lastRotationY + 0.1f) || (transform.localRotation.y < 0 && transform.localRotation.y < lastRotationY - 0.1f)) {
-            SetReward(-1f);
-        } else {
-            SetReward(1f);
-        }
+        // if ((transform.localRotation.y > 0 && transform.localRotation.y > lastRotationY + 0.1f) || (transform.localRotation.y < 0 && transform.localRotation.y < lastRotationY - 0.1f)) {
+        //     SetReward(-1f);
+        // } else {
+        //     SetReward(1f);
+        // }
 
-        if ((transform.localRotation.z > 0 && transform.localRotation.z > lastRotationZ + 0.1f) || (transform.localRotation.z < 0 && transform.localRotation.z < lastRotationZ - 0.1f)) {
-            SetReward(-1f);
-        } else {
-            SetReward(1f);
-        }
+        // if ((transform.localRotation.z > 0 && transform.localRotation.z > lastRotationZ + 0.1f) || (transform.localRotation.z < 0 && transform.localRotation.z < lastRotationZ - 0.1f)) {
+        //     SetReward(-1f);
+        // } else {
+        //     SetReward(1f);
+        // }
 
         lastRotationX = transform.localRotation.x;
         lastRotationY = transform.localRotation.y;
         lastRotationZ = transform.localRotation.z;
         lastPositionY = transform.localPosition.y;
+        lastVerticalVelocity = rb.velocity.y;
     }
 
     public override void OnEpisodeBegin()
@@ -151,7 +176,7 @@ public class RocketLanding : Agent
 
         // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
         transform.localPosition = new Vector3(0, 1000f, 0);
-        rb.velocity = Vector3.zero;
+        rb.velocity = new Vector3(0, Random.Range(0, -5f), 0);
         transform.localRotation = Quaternion.identity;
         lastRotationX = 0;
         lastRotationY = 90;
@@ -211,7 +236,7 @@ public class RocketLanding : Agent
         if (actions.ContinuousActions[0] > 0) {
             mainThrust = actions.ContinuousActions[0];
         }
-        thrust = Mathf.Clamp(mainThrust, 0, maxThrust);
+        thrust = Mathf.Clamp((mainThrust + 1f) / 2f * maxThrust, 0, maxThrust);
 
         // Add Forces
         if (fuel > 0 && thrust > 0) {

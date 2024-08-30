@@ -2,31 +2,31 @@
     "RocketLanding": {
         "checkpoints": [
             {
-                "steps": 499970,
-                "file_path": "results\\landing\\RocketLanding\\RocketLanding-499970.onnx",
-                "reward": 3.676056338028169,
-                "creation_time": 1724375269.7318602,
+                "steps": 499998,
+                "file_path": "results\\landing\\RocketLanding\\RocketLanding-499998.onnx",
+                "reward": -25.847458054942468,
+                "creation_time": 1724979531.91126,
                 "auxillary_file_paths": [
-                    "results\\landing\\RocketLanding\\RocketLanding-499970.pt"
+                    "results\\landing\\RocketLanding\\RocketLanding-499998.pt"
                 ]
             },
             {
-                "steps": 500034,
-                "file_path": "results\\landing\\RocketLanding\\RocketLanding-500034.onnx",
-                "reward": 3.676056338028169,
-                "creation_time": 1724375269.8409612,
+                "steps": 500051,
+                "file_path": "results\\landing\\RocketLanding\\RocketLanding-500051.onnx",
+                "reward": -25.791882681468177,
+                "creation_time": 1724979532.0133545,
                 "auxillary_file_paths": [
-                    "results\\landing\\RocketLanding\\RocketLanding-500034.pt"
+                    "results\\landing\\RocketLanding\\RocketLanding-500051.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 500034,
+            "steps": 500051,
             "file_path": "results\\landing\\RocketLanding.onnx",
-            "reward": 3.676056338028169,
-            "creation_time": 1724375269.8409612,
+            "reward": -25.791882681468177,
+            "creation_time": 1724979532.0133545,
             "auxillary_file_paths": [
-                "results\\landing\\RocketLanding\\RocketLanding-500034.pt"
+                "results\\landing\\RocketLanding\\RocketLanding-500051.pt"
             ]
         }
     },
