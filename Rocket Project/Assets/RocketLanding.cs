@@ -127,6 +127,7 @@ public class RocketLanding : Agent
 
         // Check if rocket is falling too fast
         if (transform.localPosition.y < 500f) {
+            Debug.Log("<500");
             if (rb.velocity.y < lastVerticalVelocity) {
                 SetReward(-1f);
 
@@ -237,6 +238,7 @@ public class RocketLanding : Agent
             mainThrust = actions.ContinuousActions[0];
         }
         thrust = Mathf.Clamp((mainThrust + 1f) / 2f * maxThrust, 0, maxThrust);
+        Debug.Log($"thrust: {thrust}");
 
         // Add Forces
         if (fuel > 0 && thrust > 0) {
