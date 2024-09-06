@@ -75,6 +75,7 @@ public class RocketLanding : Agent
     Rigidbody rb;
 
     float mainThrust = 0;
+    private float heuristicThrust = 0;
     float rocketLandingVelocity = 0.0f;
 
     float lastVerticalVelocity = 0;
@@ -86,7 +87,7 @@ public class RocketLanding : Agent
 
     void Fail() {
         float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
-        // Debug.Log("Crashed, penalty: " + penalty);
+        Debug.Log("Fail penalty: " + penalty);
         SetReward(penalty * 10);
         platformMesh.material = failMaterial;
         EndEpisode();
@@ -94,7 +95,7 @@ public class RocketLanding : Agent
 
     void Success() {
         Debug.Log("Landed");
-        SetReward(1f);
+        SetReward(5f);
         platformMesh.material = successMaterial;
         EndEpisode();
     }
@@ -108,37 +109,41 @@ public class RocketLanding : Agent
         // Debug.Log("Fuel: " + fuel);
         rocketLandingVelocity = rb.velocity.y;
 
-        // Reward for being closer to zero velocity
-        if (rocketLandingVelocity > -5.0f && rocketLandingVelocity <= 0) {
-            SetReward(1f - Mathf.Abs(rocketLandingVelocity));
+        // Reward for being closer to zero velocity the closer it is to the ground
+        float distanceToPLatform = Vector3.Distance(transform.localPosition, platform.localPosition);
+        // Encourage slow descent
+        if (rocketLandingVelocity > lastVerticalVelocity && rocketLandingVelocity < 0) {
+            // Scale reward based on distance to platform
+            SetReward(0.1f * (1 - distanceToPLatform / 1000));
         }
 
         // Check if rocket went up
         if (lastPositionY < transform.localPosition.y) {
+            SetReward(-1f);
             Fail();
         }
 
         // Check if rocket is below platform
         if (platform.localPosition.y - 10.0f > transform.localPosition.y) {
             Debug.Log("Below platform");
-            SetReward(-50f);
+            SetReward(-1f);
             Fail();
         }
 
         // Check if rocket is falling too fast
-        if (transform.localPosition.y < 500f) {
-            Debug.Log("<500");
-            if (rb.velocity.y < lastVerticalVelocity) {
-                SetReward(-1f);
+        // if (transform.localPosition.y < 500f) {
+        //     Debug.Log("<500");
+        //     if (rb.velocity.y < lastVerticalVelocity) {
+        //         SetReward(-0.1f);
 
-                if (rb.velocity.y < -30.0f) {
-                    Fail();
-                }
-            } else {
-                Debug.Log($"Rocket is slowing down, velocity: {rb.velocity.y} > {lastVerticalVelocity}");
-                SetReward(25f);
-            }
-        }
+        //         if (rb.velocity.y < -30.0f) {
+        //             Fail();
+        //         }
+        //     } else {
+        //         Debug.Log($"Rocket is slowing down, velocity: {rb.velocity.y} > {lastVerticalVelocity}");
+        //         SetReward(0.5f);
+        //     }
+        // }
 
         // Check if rocket is rotating away from upright position
         // if ((transform.localRotation.x > 0 && transform.localRotation.x > lastRotationX + 0.1f) || (transform.localRotation.x < 0 && transform.localRotation.x < lastRotationX - 0.1f)) {
@@ -177,7 +182,7 @@ public class RocketLanding : Agent
 
         // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
         transform.localPosition = new Vector3(0, 1000f, 0);
-        rb.velocity = new Vector3(0, Random.Range(0, -5f), 0);
+        rb.velocity = new Vector3(0, Random.Range(-2f, -5f), 0);
         transform.localRotation = Quaternion.identity;
         lastRotationX = 0;
         lastRotationY = 90;
@@ -233,12 +238,16 @@ public class RocketLanding : Agent
             rb.AddTorque(Vector3.down * torqueAmount);
         }
 
+        
         // Get Continuous Actions
-        if (actions.ContinuousActions[0] > 0) {
-            mainThrust = actions.ContinuousActions[0];
-        }
+        // if (actions.ContinuousActions[0] > 0) {
+            
+            
+        // }
+        mainThrust = actions.ContinuousActions[0];
+        Debug.Log($"mainThrust: {actions.ContinuousActions[0]}");
         thrust = Mathf.Clamp((mainThrust + 1f) / 2f * maxThrust, 0, maxThrust);
-        Debug.Log($"thrust: {thrust}");
+        // Debug.Log($"thrust: {thrust}, ContinuousActions[0]: {actions.ContinuousActions[0]}");
 
         // Add Forces
         if (fuel > 0 && thrust > 0) {
@@ -251,6 +260,7 @@ public class RocketLanding : Agent
             }
         } else if (fuel <= 0) {
             Debug.Log("Out of fuel");
+            Fail();
         }
     }
 
@@ -292,23 +302,13 @@ public class RocketLanding : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
 
         if (Input.GetKey(KeyCode.R)) {
-            Debug.Log($"Adding thrust: {thrustIncreaseRate * Time.deltaTime}");
-            thrust += thrustIncreaseRate * Time.deltaTime;
-
-            if (thrust > maxThrust) {
-                thrust = maxThrust;
-            }
-
-            continuousActionsOut[0] = thrust;
+            heuristicThrust += thrustIncreaseRate * Time.deltaTime / maxThrust;
         } else if (Input.GetKey(KeyCode.F)) {
-            Debug.Log($"Removing thrust: {thrustIncreaseRate * Time.deltaTime}");
-            thrust -= thrustIncreaseRate * Time.deltaTime;
-
-            if (thrust < 0) {
-                thrust = 0;
-            }
-
-            continuousActionsOut[0] = thrust;
+            heuristicThrust -= thrustIncreaseRate * Time.deltaTime / maxThrust;
         }
+
+        heuristicThrust = Mathf.Clamp(heuristicThrust, -1f, 1f);
+
+        continuousActionsOut[0] = heuristicThrust;
     }
 }

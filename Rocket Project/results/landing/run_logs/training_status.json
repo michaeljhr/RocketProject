@@ -2,22 +2,31 @@
     "RocketLanding": {
         "checkpoints": [
             {
-                "steps": 150761,
-                "file_path": "results\\landing\\RocketLanding\\RocketLanding-150761.onnx",
-                "reward": -468.59972201983135,
-                "creation_time": 1725222097.0940478,
+                "steps": 499966,
+                "file_path": "results\\landing\\RocketLanding\\RocketLanding-499966.onnx",
+                "reward": -18.406476702008927,
+                "creation_time": 1725584841.7569218,
                 "auxillary_file_paths": [
-                    "results\\landing\\RocketLanding\\RocketLanding-150761.pt"
+                    "results\\landing\\RocketLanding\\RocketLanding-499966.pt"
+                ]
+            },
+            {
+                "steps": 500094,
+                "file_path": "results\\landing\\RocketLanding\\RocketLanding-500094.onnx",
+                "reward": -18.406476702008927,
+                "creation_time": 1725584841.8734741,
+                "auxillary_file_paths": [
+                    "results\\landing\\RocketLanding\\RocketLanding-500094.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 150761,
+            "steps": 500094,
             "file_path": "results\\landing\\RocketLanding.onnx",
-            "reward": -468.59972201983135,
-            "creation_time": 1725222097.0940478,
+            "reward": -18.406476702008927,
+            "creation_time": 1725584841.8734741,
             "auxillary_file_paths": [
-                "results\\landing\\RocketLanding\\RocketLanding-150761.pt"
+                "results\\landing\\RocketLanding\\RocketLanding-500094.pt"
             ]
         }
     },
