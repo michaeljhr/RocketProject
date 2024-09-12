@@ -85,6 +85,8 @@ public class RocketLanding : Agent
     private float lastRotationZ = 0;
     private float lastPositionY = 0;
 
+    float thrustVector = 0f;
+
     void Fail() {
         float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
         Debug.Log("Fail penalty: " + penalty);
@@ -119,7 +121,7 @@ public class RocketLanding : Agent
 
         // Check if rocket went up
         if (lastPositionY < transform.localPosition.y) {
-            SetReward(-1f);
+            SetReward(-3f);
             Fail();
         }
 
@@ -129,6 +131,11 @@ public class RocketLanding : Agent
             SetReward(-1f);
             Fail();
         }
+
+
+        // if (rb.velocity.y < -10f){
+        //     SetReward(rb.velocity.y * 0.05f);
+        // }
 
         // Check if rocket is falling too fast
         // if (transform.localPosition.y < 500f) {
@@ -188,6 +195,8 @@ public class RocketLanding : Agent
         lastRotationY = 90;
         lastRotationZ = 0;
 
+        thrust = 0f;
+
         // target.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
     }
 
@@ -244,24 +253,51 @@ public class RocketLanding : Agent
             
             
         // }
-        mainThrust = actions.ContinuousActions[0];
-        Debug.Log($"mainThrust: {actions.ContinuousActions[0]}");
-        thrust = Mathf.Clamp((mainThrust + 1f) / 2f * maxThrust, 0, maxThrust);
-        // Debug.Log($"thrust: {thrust}, ContinuousActions[0]: {actions.ContinuousActions[0]}");
+        
 
-        // Add Forces
-        if (fuel > 0 && thrust > 0) {
-            Vector3 thrustVector = transform.up * thrust;
-            rb.AddForce(thrustVector);
+        //Huristic is on or off by pressing R and F, ai should be doing the same way.
+        mainThrust = actions.ContinuousActions[0];
+        Debug.Log($"mainThrust: {mainThrust}");
+        
+        if (mainThrust == 1) {
+            thrust += thrustIncreaseRate* 0.5f * Time.deltaTime;
+        }
+
+        if (mainThrust == -1){
+            thrust -= thrustIncreaseRate* 0.5f * Time.deltaTime;
+        }
+
+        thrust = Mathf.Clamp(thrust, 0, maxThrust);
+
+        if (fuel > 0) {
+            rb.AddForce(transform.up * thrust);
             fuel -= fuelBurnRate * Time.deltaTime;
             rb.mass = mass + fuel;
             if (fuel < 0) {
                 fuel = 0;
             }
-        } else if (fuel <= 0) {
+        } else  {
             Debug.Log("Out of fuel");
             Fail();
         }
+        
+        // mainThrust = actions.ContinuousActions[0];
+        // Debug.Log($"mainThrust: {actions.ContinuousActions[0]}");
+        // thrust = Mathf.Clamp((mainThrust + 1f) / 2f * maxThrust, 0, maxThrust);
+
+        // // Add Forces
+        // if (fuel > 0 && thrust > 0) {
+        //     Vector3 thrustVector = transform.up * thrust;
+        //     rb.AddForce(thrustVector);
+        //     fuel -= fuelBurnRate * Time.deltaTime;
+        //     rb.mass = mass + fuel;
+        //     if (fuel < 0) {
+        //         fuel = 0;
+        //     }
+        // } else if (fuel <= 0) {
+        //     Debug.Log("Out of fuel");
+        //     Fail();
+        // }
     }
 
     private void OnCollisionEnter(Collision other) {
