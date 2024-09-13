@@ -87,17 +87,21 @@ public class RocketLanding : Agent
 
     float thrustVector = 0f;
 
-    void Fail() {
-        float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
-        Debug.Log("Fail penalty: " + penalty);
-        SetReward(penalty * 10);
+    void Fail(float penalty = -1, string message = "") {
+        // float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
+        // Debug.Log("Fail penalty: " + penalty);
+        if (message != "") {
+            Debug.Log(message);
+        }
+
+        SetReward(penalty);
         platformMesh.material = failMaterial;
         EndEpisode();
     }
 
     void Success() {
         Debug.Log("Landed");
-        SetReward(5f);
+        SetReward(25f);
         platformMesh.material = successMaterial;
         EndEpisode();
     }
@@ -114,22 +118,32 @@ public class RocketLanding : Agent
         // Reward for being closer to zero velocity the closer it is to the ground
         float distanceToPLatform = Vector3.Distance(transform.localPosition, platform.localPosition);
         // Encourage slow descent
-        if (rocketLandingVelocity > lastVerticalVelocity && rocketLandingVelocity < 0) {
-            // Scale reward based on distance to platform
-            SetReward(0.1f * (1 - distanceToPLatform / 1000));
-        }
+        // if (rocketLandingVelocity > lastVerticalVelocity && rocketLandingVelocity < 0) {
+        //     // Scale reward based on distance to platform
+        //     SetReward(0.1f * (1 - distanceToPLatform / 1000));
+        // }
 
         // Check if rocket went up
         if (lastPositionY < transform.localPosition.y) {
-            SetReward(-3f);
-            Fail();
+            // SetReward(-10f);
+            float penalty = -20f;
+            float currentDistance = Vector3.Distance(transform.localPosition, platform.localPosition);
+
+            // If the rocket is closer to the platform, the penalty is less
+            if (currentDistance > 1000f) {
+                currentDistance = 1000f;
+            }
+            penalty = penalty * (distanceToPLatform / 1000);
+
+
+            Fail(penalty, $"Rocket went up, penalty: {penalty} at distance: {distanceToPLatform}");
         }
 
         // Check if rocket is below platform
         if (platform.localPosition.y - 10.0f > transform.localPosition.y) {
-            Debug.Log("Below platform");
+            // Debug.Log("Below platform");
             SetReward(-1f);
-            Fail();
+            Fail(-1f, "Below platform");
         }
 
 
@@ -257,7 +271,7 @@ public class RocketLanding : Agent
 
         //Huristic is on or off by pressing R and F, ai should be doing the same way.
         mainThrust = actions.ContinuousActions[0];
-        Debug.Log($"mainThrust: {mainThrust}");
+        // Debug.Log($"mainThrust: {mainThrust}");
         
         if (mainThrust == 1) {
             thrust += thrustIncreaseRate* 0.5f * Time.deltaTime;
@@ -277,8 +291,8 @@ public class RocketLanding : Agent
                 fuel = 0;
             }
         } else  {
-            Debug.Log("Out of fuel");
-            Fail();
+            // Debug.Log("Out of fuel");
+            Fail(-1, "Out of fuel");
         }
         
         // mainThrust = actions.ContinuousActions[0];
@@ -304,8 +318,10 @@ public class RocketLanding : Agent
 
         Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
 
-        if (rocketLandingVelocity < -5.0f) {
-            Fail();
+        if (rocketLandingVelocity < -7.0f) {
+            float penalty = (rocketLandingVelocity / 10) * 2f;
+            Debug.Log("Fail penalty: " + penalty);
+            Fail(penalty);
         } else {
             Success();
         }

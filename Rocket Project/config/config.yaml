@@ -23,9 +23,9 @@ behaviors:
     behavioral_cloning:
       demo_path: "demos/landing.demo"
       strength: 0.5 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
-    max_steps: 500000 # maximum number of steps in a given training session
+    max_steps: 750000 # maximum number of steps in a given training session
     time_horizon: 128 # number of steps the agent considers before making a decision
-    summary_freq: 10000 # how often to save training statistics
+    summary_freq: 20000 # how often to save training statistics
 
 # HOW TO USE THIS FILE
 # mlagents-learn config/config.yaml --run-id=MoveToGoal (--force, --train, --resume)
