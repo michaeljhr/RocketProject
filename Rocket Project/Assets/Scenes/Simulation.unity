@@ -14819,7 +14819,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 446743087335112606, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
       propertyPath: Record
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446743087335112606, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
       propertyPath: DemonstrationName
@@ -14868,10 +14868,6 @@ PrefabInstance:
     - target: {fileID: 3846078710649805931, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
       propertyPath: m_Name
       value: RocketEnvironment
-      objectReference: {fileID: 0}
-    - target: {fileID: 7831517385474157833, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
-      propertyPath: m_Model
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -83,7 +83,7 @@ public class RocketLanding : Agent
     private float lastRotationX = 0;
     private float lastRotationY = 90;
     private float lastRotationZ = 0;
-    private float lastPositionY = 0;
+    private float lastPositionY = 2000;
 
     float thrustVector = 0f;
 
@@ -208,6 +208,7 @@ public class RocketLanding : Agent
         lastRotationX = 0;
         lastRotationY = 90;
         lastRotationZ = 0;
+        lastPositionY = 2000;
 
         thrust = 0f;
 
@@ -318,7 +319,7 @@ public class RocketLanding : Agent
 
         Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
 
-        if (rocketLandingVelocity < -7.0f) {
+        if (rocketLandingVelocity < -20.0f) {
             float penalty = (rocketLandingVelocity / 10) * 2f;
             Debug.Log("Fail penalty: " + penalty);
             Fail(penalty);
