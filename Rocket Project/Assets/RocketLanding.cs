@@ -63,7 +63,7 @@ public class RocketLanding : Agent
     public Transform platform;
 
     [Header("Physics Parameters")]
-    public float gravity = 9.81f;
+    // public float gravity = 9.81f;
     public float drag = 0.1f;
     public float angularDrag = 0.1f;
     public float torqueAmount = 1000;
@@ -111,7 +111,7 @@ public class RocketLanding : Agent
         rb.drag = drag;
         rb.angularDrag = angularDrag;
 
-        Physics.gravity = new Vector3(0, -gravity, 0);
+        // Physics.gravity = new Vector3(0, -gravity, 0); TODO: consider making the AI aware of the current gravity
         // Debug.Log("Fuel: " + fuel);
         rocketLandingVelocity = rb.velocity.y;
 

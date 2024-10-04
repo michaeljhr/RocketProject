@@ -5,6 +5,18 @@ using TMPro;
 
 public class SimulationManager : MonoBehaviour
 {
+    
+    public enum Environment { Earth, Moon, Mars, Custom }
+
+    [Header("Environment Parameters")]
+    public Environment environment = Environment.Earth;
+    // public TMP_Dropdown environmentDropdown;
+
+    // skyboxes
+    public Material earthSkybox;
+    public Material moonSkybox;
+    public Material marsSkybox;
+
     [Header("Spawn Parameters")]
     public TMP_InputField positionX;
     public TMP_InputField positionY;
@@ -46,6 +58,54 @@ public class SimulationManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetEnvironment(int value) {
+        environment = (Environment)value;
+        Debug.Log($"Environment set to {environment}");
+        switch (environment) {
+            case Environment.Earth:
+                gravity.text = "9.81";
+                airResistance.text = "0.1";
+                // apply earth skybox
+                RenderSettings.skybox = earthSkybox;
+
+                // set the gravity of the world
+                Physics.gravity = new Vector3(0, -9.81f, 0);
+
+                // set the drag of the rocket
+                rocket.GetComponent<RocketLanding>().drag = 0.1f;
+
+                break;
+            case Environment.Moon:
+                gravity.text = "1.62";
+                airResistance.text = "0.1";
+                // apply moon skybox
+                RenderSettings.skybox = moonSkybox;
+
+                // set the gravity of the world
+                Physics.gravity = new Vector3(0, -1.62f, 0);
+
+                // set the drag of the rocket
+                rocket.GetComponent<RocketLanding>().drag = 0f;
+                break;
+            case Environment.Mars:
+                gravity.text = "3.71";
+                airResistance.text = "0.1";
+                // apply mars skybox
+                RenderSettings.skybox = marsSkybox;
+
+                // set the gravity of the world
+                Physics.gravity = new Vector3(0, -3.71f, 0);
+
+                // set the drag of the rocket
+                rocket.GetComponent<RocketLanding>().drag = 0.05f;
+                break;
+            case Environment.Custom:
+                gravity.text = "";
+                airResistance.text = "";
+                break;
+        }
     }
 
     public void ResetRocket() {

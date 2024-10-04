@@ -4814,6 +4814,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19b96fb65e9f114999e793cc0f4b31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  environment: 0
+  earthSkybox: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
+  moonSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
+  marsSkybox: {fileID: 2100000, guid: 5d133deeaa66ed445853e946ff25e073, type: 2}
   positionX: {fileID: 724732616}
   positionY: {fileID: 139033044}
   positionZ: {fileID: 1649228322}
@@ -11400,7 +11404,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 735136905}
+        m_TargetAssemblyTypeName: SimulationManager, Assembly-CSharp
+        m_MethodName: SetEnvironment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1801229358
 MonoBehaviour:
@@ -14883,6 +14899,10 @@ PrefabInstance:
       propertyPath: trainingManager
       value: 
       objectReference: {fileID: 735136907}
+    - target: {fileID: 5898041306640375669, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7831517385474157833, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
       propertyPath: m_Model
       value: 
