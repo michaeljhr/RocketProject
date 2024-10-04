@@ -10,19 +10,19 @@ behaviors:
       lambd: 0.99 # (0-1) the higher, the less biased but more variable the estimate of the advantage function
       learning_rate_schedule: linear # learning rate schedule; options: constant, linear, exponential Note: decrease the learning rate over time to stabilize training
     network_settings:
-      normalize: false # normalize the input states
-      hidden_units: 128 # number of units in the hidden layers
-      num_layers: 2 # number of hidden layers
+      normalize: true # normalize the input states
+      hidden_units: 256 # number of units in the hidden layers
+      num_layers: 3 # number of hidden layers
     reward_signals:
       extrinsic:
         gamma: 0.99 # (0-1) discount factor for future rewards; the larger the gamma, the more importance the agent places on future rewards
         strength: 1.0 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
       gail:
-        strength: 0.5 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
-        demo_path: "demos/landing.demo"
+        strength: 0.1 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
+        demo_path: "demos/newlanding.demo"
     behavioral_cloning:
-      demo_path: "demos/landing.demo"
-      strength: 0.5 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
+      demo_path: "demos/newlanding.demo"
+      strength: 0.1 # (0-1) scales the reward signal; the larger the strength, the more the agent relies on the reward signal
     max_steps: 750000 # maximum number of steps in a given training session
     time_horizon: 128 # number of steps the agent considers before making a decision
     summary_freq: 20000 # how often to save training statistics

@@ -53,7 +53,7 @@ public class RocketLanding : Agent
     public float mass = 22200;
     public float thrust = 0;
     public float steerThrust = 1000;
-    public float maxThrust = 1500000;
+    public float maxThrust = 6806000f;
     public float startingFuel = 200000;
     public float thrustIncreaseRate = 1000;
     public float fuelBurnRate = 1000;
@@ -118,22 +118,15 @@ public class RocketLanding : Agent
         // Reward for being closer to zero velocity the closer it is to the ground
         float distanceToPLatform = Vector3.Distance(transform.localPosition, platform.localPosition);
         // Encourage slow descent
-        // if (rocketLandingVelocity > lastVerticalVelocity && rocketLandingVelocity < 0) {
-        //     // Scale reward based on distance to platform
-        //     SetReward(0.1f * (1 - distanceToPLatform / 1000));
-        // }
+        if (distanceToPLatform < 500f) {
+            float reward = Mathf.Clamp(1f - (Mathf.Abs(rocketLandingVelocity) / 10f), -1f, 1f);
+            AddReward(reward * Time.deltaTime);
+        }
 
         // Check if rocket went up
         if (lastPositionY < transform.localPosition.y) {
             // SetReward(-10f);
-            float penalty = -20f;
-            float currentDistance = Vector3.Distance(transform.localPosition, platform.localPosition);
-
-            // If the rocket is closer to the platform, the penalty is less
-            if (currentDistance > 1000f) {
-                currentDistance = 1000f;
-            }
-            penalty = penalty * (distanceToPLatform / 1000);
+            float penalty = -1f * Mathf.Clamp((transform.localPosition.y - lastPositionY), 0, 10);
 
 
             Fail(penalty, $"Rocket went up, penalty: {penalty} at distance: {distanceToPLatform}");
@@ -142,7 +135,6 @@ public class RocketLanding : Agent
         // Check if rocket is below platform
         if (platform.localPosition.y - 10.0f > transform.localPosition.y) {
             // Debug.Log("Below platform");
-            SetReward(-1f);
             Fail(-1f, "Below platform");
         }
 
@@ -201,8 +193,11 @@ public class RocketLanding : Agent
         rb.drag = drag;
         rb.angularDrag = angularDrag;
 
+        thrustIncreaseRate = maxThrust / 5f;
+        fuelBurnRate = startingFuel / 160f;
+
         // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
-        transform.localPosition = new Vector3(0, 1000f, 0);
+        transform.localPosition = new Vector3(0, 500f, 0);
         rb.velocity = new Vector3(0, Random.Range(-2f, -5f), 0);
         transform.localRotation = Quaternion.identity;
         lastRotationX = 0;
@@ -274,13 +269,17 @@ public class RocketLanding : Agent
         mainThrust = actions.ContinuousActions[0];
         // Debug.Log($"mainThrust: {mainThrust}");
         
-        if (mainThrust == 1) {
-            thrust += thrustIncreaseRate* 0.5f * Time.deltaTime;
-        }
+        // if (mainThrust > 0) {
+        //     thrust += thrustIncreaseRate * Time.deltaTime;
+        // }
 
-        if (mainThrust == -1){
-            thrust -= thrustIncreaseRate* 0.5f * Time.deltaTime;
-        }
+        // if (mainThrust < 0){
+        //     thrust -= thrustIncreaseRate * Time.deltaTime;
+        // }
+
+        thrust = maxThrust * mainThrust;
+
+
 
         thrust = Mathf.Clamp(thrust, 0, maxThrust);
 
@@ -319,8 +318,8 @@ public class RocketLanding : Agent
 
         Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
 
-        if (rocketLandingVelocity < -20.0f) {
-            float penalty = (rocketLandingVelocity / 10) * 2f;
+        if (rocketLandingVelocity < -10.0f) {
+            float penalty = Mathf.Abs(rocketLandingVelocity) * -0.2f;
             Debug.Log("Fail penalty: " + penalty);
             Fail(penalty);
         } else {
@@ -355,9 +354,11 @@ public class RocketLanding : Agent
         var continuousActionsOut = actionsOut.ContinuousActions;
 
         if (Input.GetKey(KeyCode.R)) {
-            heuristicThrust += thrustIncreaseRate * Time.deltaTime / maxThrust;
+            // Debug.Log("Increasing thrust");
+            heuristicThrust += (thrustIncreaseRate * Time.deltaTime * 10) / maxThrust;
         } else if (Input.GetKey(KeyCode.F)) {
-            heuristicThrust -= thrustIncreaseRate * Time.deltaTime / maxThrust;
+            // Debug.Log("Decreasing thrust");
+            heuristicThrust -= (thrustIncreaseRate * Time.deltaTime * 10) / maxThrust;
         }
 
         heuristicThrust = Mathf.Clamp(heuristicThrust, -1f, 1f);

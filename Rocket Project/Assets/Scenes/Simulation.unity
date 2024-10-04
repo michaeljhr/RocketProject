@@ -4794,6 +4794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 735136906}
   - component: {fileID: 735136905}
+  - component: {fileID: 735136907}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -4844,6 +4845,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &735136907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735136904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cd10fd1d6a54345b47d1cf58553f09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bestLandingSpeed: -1000
 --- !u!1001 &747989717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14818,10 +14832,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 446743087335112606, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
-      propertyPath: Record
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 446743087335112606, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
       propertyPath: DemonstrationName
       value: newlanding
       objectReference: {fileID: 0}
@@ -14869,6 +14879,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: RocketEnvironment
       objectReference: {fileID: 0}
+    - target: {fileID: 4678777141173119169, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
+      propertyPath: trainingManager
+      value: 
+      objectReference: {fileID: 735136907}
+    - target: {fileID: 7831517385474157833, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 1aee72239e5e5b1468f30c8b1b6338a1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

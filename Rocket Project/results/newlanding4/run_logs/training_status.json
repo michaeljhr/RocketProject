@@ -2,22 +2,31 @@
     "RocketLanding": {
         "checkpoints": [
             {
-                "steps": 428648,
-                "file_path": "results\\newlanding4\\RocketLanding\\RocketLanding-428648.onnx",
-                "reward": null,
-                "creation_time": 1726189083.2774098,
+                "steps": 499983,
+                "file_path": "results\\newlanding4\\RocketLanding\\RocketLanding-499983.onnx",
+                "reward": -14.759353515174654,
+                "creation_time": 1726790977.4013486,
                 "auxillary_file_paths": [
-                    "results\\newlanding4\\RocketLanding\\RocketLanding-428648.pt"
+                    "results\\newlanding4\\RocketLanding\\RocketLanding-499983.pt"
+                ]
+            },
+            {
+                "steps": 724492,
+                "file_path": "results\\newlanding4\\RocketLanding\\RocketLanding-724492.onnx",
+                "reward": null,
+                "creation_time": 1726791085.0621765,
+                "auxillary_file_paths": [
+                    "results\\newlanding4\\RocketLanding\\RocketLanding-724492.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 428648,
+            "steps": 724492,
             "file_path": "results\\newlanding4\\RocketLanding.onnx",
             "reward": null,
-            "creation_time": 1726189083.2774098,
+            "creation_time": 1726791085.0621765,
             "auxillary_file_paths": [
-                "results\\newlanding4\\RocketLanding\\RocketLanding-428648.pt"
+                "results\\newlanding4\\RocketLanding\\RocketLanding-724492.pt"
             ]
         }
     },
