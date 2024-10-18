@@ -4863,7 +4863,7 @@ MonoBehaviour:
   velocityX: {fileID: 851305430}
   velocityY: {fileID: 1145004621}
   velocityZ: {fileID: 457206758}
-  rocket: {fileID: 919132148204616423}
+  rocket: {fileID: 1424918479}
   useInitialSpawn: 1
   initialMass: {fileID: 1905361858}
   currentFuel: {fileID: 269810199}
@@ -7575,8 +7575,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Reset
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fc830f05b4d1d6d4c8979be9f9e58039, type: 2}
+  m_sharedMaterial: {fileID: -4034032323250324329, guid: fc830f05b4d1d6d4c8979be9f9e58039, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7639,7 +7639,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1209498914
@@ -8611,7 +8611,7 @@ RectTransform:
   m_GameObject: {fileID: 1383804492}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1209498912}
@@ -8619,7 +8619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -215, y: 82}
+  m_AnchoredPosition: {x: -279, y: 82}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1383804494
@@ -8840,6 +8840,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
+--- !u!1 &1424918479 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5898041306640375669, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
+  m_PrefabInstance: {fileID: 8280640607042602175}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1433199391
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14906,11 +14911,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
---- !u!1 &919132148204616423 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6025712840616261115, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
-  m_PrefabInstance: {fileID: 8280640607042602175}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8280640607042602175
 PrefabInstance:
   m_ObjectHideFlags: 0

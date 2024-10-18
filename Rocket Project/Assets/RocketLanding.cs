@@ -185,9 +185,18 @@ public class RocketLanding : Agent
         lastVerticalVelocity = rb.velocity.y;
     }
 
+    void Start() {
+        rb = GetComponent<Rigidbody>();
+        // rb.mass = mass + fuel;
+        // rb.drag = drag;
+        // rb.angularDrag = angularDrag;
+    }
+
     public override void OnEpisodeBegin()
     {
         rb = GetComponent<Rigidbody>();
+
+        // Debug.Log($"RB: {rb}");
 
         fuel = startingFuel;
         rb.mass = mass + fuel;

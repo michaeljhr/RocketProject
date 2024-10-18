@@ -51,7 +51,7 @@ public class SimulationManager : MonoBehaviour
         originalRotation = rocket.transform.localRotation;
         originalVelocity = rocket.GetComponent<Rigidbody>().velocity;
 
-        ResetRocket();
+        // ResetRocket();
     }
 
     // Update is called once per frame
@@ -109,23 +109,24 @@ public class SimulationManager : MonoBehaviour
     }
 
     public void ResetRocket() {
-        if (useInitialSpawn) {
-            rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
-            rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
-            rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
-        }
-        if (initialMass.text != "") {
-            Debug.Log($"Setting mass to {initialMass.text}");
-            rocket.GetComponent<RocketLandingManual>().mass = float.Parse(initialMass.text);
-            Debug.Log($"Mass set to {rocket.GetComponent<RocketLandingManual>().mass}");
-        }
-        if (currentFuel.text != "") rocket.GetComponent<RocketLandingManual>().startingFuel = float.Parse(currentFuel.text);
-        // if (maxFuel.text != "") rocket.GetComponent<RocketLandingManual>().maxFuel = float.Parse(maxFuel.text);
+        rocket.GetComponent<RocketLanding>().EndEpisode();
+        // if (useInitialSpawn) {
+        //     rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
+        //     rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
+        //     rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
+        // }
+        // if (initialMass.text != "") {
+        //     Debug.Log($"Setting mass to {initialMass.text}");
+        //     rocket.GetComponent<RocketLandingManual>().mass = float.Parse(initialMass.text);
+        //     Debug.Log($"Mass set to {rocket.GetComponent<RocketLandingManual>().mass}");
+        // }
+        // if (currentFuel.text != "") rocket.GetComponent<RocketLandingManual>().startingFuel = float.Parse(currentFuel.text);
+        // // if (maxFuel.text != "") rocket.GetComponent<RocketLandingManual>().maxFuel = float.Parse(maxFuel.text);
 
-        if (gravity.text != "") rocket.GetComponent<RocketLandingManual>().gravity = float.Parse(gravity.text);
-        if (airResistance.text != "") rocket.GetComponent<RocketLandingManual>().drag = float.Parse(airResistance.text);
-        if (airResistance.text != "") rocket.GetComponent<RocketLandingManual>().angularDrag = float.Parse(airResistance.text);
+        // if (gravity.text != "") rocket.GetComponent<RocketLandingManual>().gravity = float.Parse(gravity.text);
+        // if (airResistance.text != "") rocket.GetComponent<RocketLandingManual>().drag = float.Parse(airResistance.text);
+        // if (airResistance.text != "") rocket.GetComponent<RocketLandingManual>().angularDrag = float.Parse(airResistance.text);
 
-        Debug.Log($"Rocket Reset with mass: {rocket.GetComponent<RocketLandingManual>().mass}, fuel: {rocket.GetComponent<RocketLandingManual>().startingFuel}");
+        // Debug.Log($"Rocket Reset with mass: {rocket.GetComponent<RocketLandingManual>().mass}, fuel: {rocket.GetComponent<RocketLandingManual>().startingFuel}");
     }
 }
