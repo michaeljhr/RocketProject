@@ -37,6 +37,7 @@ Main Thruster:
 
 public class RocketLanding : Agent
 {
+    public SimulationManager simulationManager;
     [Header("Object References")]
     public GameObject mainThrusterParticles;
     public Transform eastThruster;
@@ -197,7 +198,11 @@ public class RocketLanding : Agent
         fuelBurnRate = startingFuel / 160f;
 
         // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
-        transform.localPosition = new Vector3(0, 500f, 0);
+        // transform.localPosition = new Vector3(0, 500f, 0);
+        float initialPositionX = float.Parse(simulationManager.positionX.text);
+        float initialPositionY = float.Parse(simulationManager.positionY.text);
+        float initialPositionZ = float.Parse(simulationManager.positionZ.text);
+        transform.localPosition = new Vector3(initialPositionX, initialPositionY, initialPositionZ);
         rb.velocity = new Vector3(0, Random.Range(-2f, -5f), 0);
         transform.localRotation = Quaternion.identity;
         lastRotationX = 0;
