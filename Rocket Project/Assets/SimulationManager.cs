@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.MLAgents.Policies;
+using Unity.Barracuda;
 using TMPro;
 
 public class SimulationManager : MonoBehaviour
@@ -44,6 +46,12 @@ public class SimulationManager : MonoBehaviour
     private Quaternion originalRotation;
     private Vector3 originalVelocity;
 
+    [Header("Control Parameters")]
+    public BehaviorParameters showcaseRocket;
+    public List<NNModel> models;
+    public TMP_Dropdown modelDropdown;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +66,23 @@ public class SimulationManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetModel(int value) {
+        showcaseRocket.Model = models[value];
+        Debug.Log($"Model set to {models[value].name}");
+    }
+
+    public void ToggleManualControl(bool value) {
+        if (value) {
+            // set the dropdown value to the last option
+            modelDropdown.value = modelDropdown.options.Count - 1;
+            SetModel(modelDropdown.value);
+        } else {
+            // set the dropdown value to the first option
+            modelDropdown.value = 0;
+            SetModel(modelDropdown.value);
+        }
     }
 
     public void SetEnvironment(int value) {
