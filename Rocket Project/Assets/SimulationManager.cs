@@ -7,12 +7,12 @@ using TMPro;
 
 public class SimulationManager : MonoBehaviour
 {
-    
+    public bool simulationRunning = false;
     public enum Environment { Earth, Moon, Mars, Custom }
 
     [Header("Environment Parameters")]
     public Environment environment = Environment.Earth;
-    // public TMP_Dropdown environmentDropdown;
+    public TMP_Dropdown environmentDropdown;
 
     // skyboxes
     public Material earthSkybox;
@@ -50,6 +50,8 @@ public class SimulationManager : MonoBehaviour
     public BehaviorParameters showcaseRocket;
     public List<NNModel> models;
     public TMP_Dropdown modelDropdown;
+    public GameObject manualControlButton;
+    public GameObject aiControlButton;
 
 
     // Start is called before the first frame update
@@ -60,6 +62,7 @@ public class SimulationManager : MonoBehaviour
         originalVelocity = rocket.GetComponent<Rigidbody>().velocity;
 
         // ResetRocket();
+        SetEnvironment((int)environment);
     }
 
     // Update is called once per frame
@@ -68,20 +71,38 @@ public class SimulationManager : MonoBehaviour
         
     }
 
-    public void SetModel(int value) {
+    public void StartSimulation() {
+        ResetRocket();
+        simulationRunning = true;
+    }
+
+    public void StopSimulation() {
+        simulationRunning = false;
+    }
+
+    public void SetModel() {
+        int value = modelDropdown.value;
         showcaseRocket.Model = models[value];
-        Debug.Log($"Model set to {models[value].name}");
+        // Debug.Log($"Model set to {models[value].name}");
+
+        if (value == models.Count - 1) {
+            manualControlButton.SetActive(false);
+            aiControlButton.SetActive(true);
+        } else {
+            manualControlButton.SetActive(true);
+            aiControlButton.SetActive(false);
+        }
     }
 
     public void ToggleManualControl(bool value) {
         if (value) {
             // set the dropdown value to the last option
             modelDropdown.value = modelDropdown.options.Count - 1;
-            SetModel(modelDropdown.value);
+            SetModel();
         } else {
             // set the dropdown value to the first option
             modelDropdown.value = 0;
-            SetModel(modelDropdown.value);
+            SetModel();
         }
     }
 
@@ -127,26 +148,29 @@ public class SimulationManager : MonoBehaviour
                 rocket.GetComponent<RocketLanding>().drag = 0.05f;
                 break;
             case Environment.Custom:
-                gravity.text = "";
-                airResistance.text = "";
+                // gravity.text = "";
+                // airResistance.text = "";
                 break;
         }
+
+        // update the dropdown value
+        environmentDropdown.SetValueWithoutNotify(value);
     }
 
     public void ResetRocket() {
         rocket.GetComponent<RocketLanding>().EndEpisode();
-        // if (useInitialSpawn) {
-        //     rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
-        //     rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
-        //     rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
-        // }
-        // if (initialMass.text != "") {
-        //     Debug.Log($"Setting mass to {initialMass.text}");
-        //     rocket.GetComponent<RocketLandingManual>().mass = float.Parse(initialMass.text);
-        //     Debug.Log($"Mass set to {rocket.GetComponent<RocketLandingManual>().mass}");
-        // }
-        // if (currentFuel.text != "") rocket.GetComponent<RocketLandingManual>().startingFuel = float.Parse(currentFuel.text);
-        // // if (maxFuel.text != "") rocket.GetComponent<RocketLandingManual>().maxFuel = float.Parse(maxFuel.text);
+        if (useInitialSpawn) {
+            rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
+            rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
+            rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
+        }
+        if (initialMass.text != "") {
+            Debug.Log($"Setting mass to {initialMass.text}");
+            rocket.GetComponent<RocketLanding>().mass = float.Parse(initialMass.text);
+            Debug.Log($"Mass set to {rocket.GetComponent<RocketLanding>().mass}");
+        }
+        if (currentFuel.text != "") rocket.GetComponent<RocketLanding>().fuel = float.Parse(currentFuel.text);
+        if (maxFuel.text != "") rocket.GetComponent<RocketLanding>().startingFuel = float.Parse(maxFuel.text);
 
         // if (gravity.text != "") rocket.GetComponent<RocketLandingManual>().gravity = float.Parse(gravity.text);
         // if (airResistance.text != "") rocket.GetComponent<RocketLandingManual>().drag = float.Parse(airResistance.text);

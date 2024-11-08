@@ -64,7 +64,7 @@ public class RocketLanding : Agent
     public Transform platform;
 
     [Header("Physics Parameters")]
-    // public float gravity = 9.81f;
+    public float gravity = 9.81f;
     public float drag = 0.1f;
     public float angularDrag = 0.1f;
     public float torqueAmount = 1000;
@@ -87,6 +87,7 @@ public class RocketLanding : Agent
     private float lastPositionY = 2000;
 
     float thrustVector = 0f;
+    bool simulationRunning = false;
 
     void Fail(float penalty = -1, string message = "") {
         // float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
@@ -108,11 +109,23 @@ public class RocketLanding : Agent
     }
 
     void FixedUpdate() {
+        // check if simulation is supposed to be running and freeze the rocket if not
+        if (!simulationManager.simulationRunning) {
+            EndEpisode();
+            return;
+        } else if (simulationManager.simulationRunning && !simulationRunning) {
+            simulationRunning = true;
+            EndEpisode();
+        }
+
+        
+
         rb.mass = mass + fuel;
         rb.drag = drag;
         rb.angularDrag = angularDrag;
 
-        // Physics.gravity = new Vector3(0, -gravity, 0); TODO: consider making the AI aware of the current gravity
+        gravity = float.Parse(simulationManager.gravity.text);
+        Physics.gravity = new Vector3(0, -gravity, 0); // TODO: consider making the AI aware of the current gravity
         // Debug.Log("Fuel: " + fuel);
         rocketLandingVelocity = rb.velocity.y;
 

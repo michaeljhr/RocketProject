@@ -1864,7 +1864,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 735136905}
+        m_TargetAssemblyTypeName: SimulationManager, Assembly-CSharp
+        m_MethodName: SetEnvironment
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5243,7 +5255,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19b96fb65e9f114999e793cc0f4b31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  simulationRunning: 0
   environment: 0
+  environmentDropdown: {fileID: 1801229357}
   earthSkybox: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
   moonSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   marsSkybox: {fileID: 2100000, guid: 5d133deeaa66ed445853e946ff25e073, type: 2}
@@ -5263,12 +5277,14 @@ MonoBehaviour:
   maxFuel: {fileID: 389830864}
   gravity: {fileID: 331879113}
   airResistance: {fileID: 1953718540}
-  showcaseRocket: {fileID: 0}
+  showcaseRocket: {fileID: 2059313402}
   models:
   - {fileID: 5022602860645237092, guid: 94dcd4a9041705f4bb1df41c46c5164b, type: 3}
   - {fileID: 5022602860645237092, guid: 1aee72239e5e5b1468f30c8b1b6338a1, type: 3}
   - {fileID: 0}
-  modelDropdown: {fileID: 0}
+  modelDropdown: {fileID: 1414209681}
+  manualControlButton: {fileID: 1796735613}
+  aiControlButton: {fileID: 1463439029}
 --- !u!4 &735136906
 Transform:
   m_ObjectHideFlags: 0
@@ -9265,6 +9281,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 735136905}
+        m_TargetAssemblyTypeName: SimulationManager, Assembly-CSharp
+        m_MethodName: StopSimulation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1383804495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9441,8 +9469,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 735136905}
         m_TargetAssemblyTypeName: SimulationManager, Assembly-CSharp
-        m_MethodName: SetEnvironment
-        m_Mode: 0
+        m_MethodName: SetModel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15948,6 +15976,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6526241414308758991, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
   m_PrefabInstance: {fileID: 8280640607042602175}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2059313402 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7831517385474157833, guid: 87922e71c19a1924fb4068780426ac41, type: 3}
+  m_PrefabInstance: {fileID: 8280640607042602175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424918479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2064782716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16572,6 +16611,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 735136905}
+        m_TargetAssemblyTypeName: SimulationManager, Assembly-CSharp
+        m_MethodName: StartSimulation
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
