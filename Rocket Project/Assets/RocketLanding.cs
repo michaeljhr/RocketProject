@@ -4,6 +4,8 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Policies;
+using Unity.Barracuda;
 
 /*
 
@@ -110,22 +112,22 @@ public class RocketLanding : Agent
 
     void FixedUpdate() {
         // check if simulation is supposed to be running and freeze the rocket if not
-        if (!simulationManager.simulationRunning) {
-            EndEpisode();
-            return;
-        } else if (simulationManager.simulationRunning && !simulationRunning) {
-            simulationRunning = true;
-            EndEpisode();
+        if (simulationManager != null) {
+            if (!simulationManager.simulationRunning) {
+                EndEpisode();
+                return;
+            } else if (simulationManager.simulationRunning && !simulationRunning) {
+                simulationRunning = true;
+                EndEpisode();
+            }
+            gravity = float.Parse(simulationManager.gravity.text);
+            Physics.gravity = new Vector3(0, -gravity, 0); // TODO: consider making the AI aware of the current gravity
         }
-
         
-
         rb.mass = mass + fuel;
         rb.drag = drag;
         rb.angularDrag = angularDrag;
 
-        gravity = float.Parse(simulationManager.gravity.text);
-        Physics.gravity = new Vector3(0, -gravity, 0); // TODO: consider making the AI aware of the current gravity
         // Debug.Log("Fuel: " + fuel);
         rocketLandingVelocity = rb.velocity.y;
 
@@ -138,7 +140,7 @@ public class RocketLanding : Agent
         }
 
         // Check if rocket went up
-        if (lastPositionY < transform.localPosition.y) {
+        if (lastPositionY < transform.localPosition.y && GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly) {
             // SetReward(-10f);
             float penalty = -1f * Mathf.Clamp((transform.localPosition.y - lastPositionY), 0, 10);
 
@@ -219,12 +221,16 @@ public class RocketLanding : Agent
         thrustIncreaseRate = maxThrust / 5f;
         fuelBurnRate = startingFuel / 160f;
 
-        // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
-        // transform.localPosition = new Vector3(0, 500f, 0);
-        float initialPositionX = float.Parse(simulationManager.positionX.text);
-        float initialPositionY = float.Parse(simulationManager.positionY.text);
-        float initialPositionZ = float.Parse(simulationManager.positionZ.text);
-        transform.localPosition = new Vector3(initialPositionX, initialPositionY, initialPositionZ);
+        if (simulationManager != null) {
+            float initialPositionX = float.Parse(simulationManager.positionX.text);
+            float initialPositionY = float.Parse(simulationManager.positionY.text);
+            float initialPositionZ = float.Parse(simulationManager.positionZ.text);
+            transform.localPosition = new Vector3(initialPositionX, initialPositionY, initialPositionZ);
+        } else {
+            // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
+            transform.localPosition = new Vector3(0, 500f, 0);
+        }
+        
         rb.velocity = new Vector3(0, Random.Range(-2f, -5f), 0);
         transform.localRotation = Quaternion.identity;
         lastRotationX = 0;
@@ -233,8 +239,6 @@ public class RocketLanding : Agent
         lastPositionY = 2000;
 
         thrust = 0f;
-
-        // target.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
     }
 
     public override void CollectObservations(VectorSensor sensor)

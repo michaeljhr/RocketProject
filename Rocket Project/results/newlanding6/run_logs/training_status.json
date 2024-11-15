@@ -1,0 +1,38 @@
+{
+    "RocketLanding": {
+        "checkpoints": [
+            {
+                "steps": 499909,
+                "file_path": "results\\newlanding6\\RocketLanding\\RocketLanding-499909.onnx",
+                "reward": 70.51726854840915,
+                "creation_time": 1731632541.2145665,
+                "auxillary_file_paths": [
+                    "results\\newlanding6\\RocketLanding\\RocketLanding-499909.pt"
+                ]
+            },
+            {
+                "steps": 750007,
+                "file_path": "results\\newlanding6\\RocketLanding\\RocketLanding-750007.onnx",
+                "reward": 65.48404549062252,
+                "creation_time": 1731632677.0346384,
+                "auxillary_file_paths": [
+                    "results\\newlanding6\\RocketLanding\\RocketLanding-750007.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 750007,
+            "file_path": "results\\newlanding6\\RocketLanding.onnx",
+            "reward": 65.48404549062252,
+            "creation_time": 1731632677.0346384,
+            "auxillary_file_paths": [
+                "results\\newlanding6\\RocketLanding\\RocketLanding-750007.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.3.1+cu121"
+    }
+}

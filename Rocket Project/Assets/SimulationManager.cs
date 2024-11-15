@@ -88,9 +88,13 @@ public class SimulationManager : MonoBehaviour
         if (value == models.Count - 1) {
             manualControlButton.SetActive(false);
             aiControlButton.SetActive(true);
+
+            // set the rocket to heuristic control
+            rocket.GetComponent<BehaviorParameters>().BehaviorType = BehaviorType.HeuristicOnly;
         } else {
             manualControlButton.SetActive(true);
             aiControlButton.SetActive(false);
+            rocket.GetComponent<BehaviorParameters>().BehaviorType = BehaviorType.InferenceOnly;
         }
     }
 
