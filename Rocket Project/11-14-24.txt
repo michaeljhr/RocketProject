@@ -1125,3 +1125,118 @@ D:\RocketProject\RocketProject\Rocket Project\venv\lib\site-packages\torch\__ini
 [INFO] Exported results\newlanding10alt\RocketLanding\RocketLanding-750079.onnx
 [INFO] Copied results\newlanding10alt\RocketLanding\RocketLanding-750079.onnx to results\newlanding10alt\RocketLanding.onnx.
 (venv) PS D:\RocketProject\RocketProject\Rocket Project> 
+        ╓╖╬│╡  ││╬╖╖
+    ╓╖╬│││││┘  ╬│││││╬╖
+ ╖╬│││││╬╜        ╙╬│││││╖╖                               ╗╗╗
+ ╬╬╬╬╖││╦╖        ╖╬││╗╣╣╣╬      ╟╣╣╬    ╟╣╣╣             ╜╜╜  ╟╣╣
+ ╬╬╬╬╬╬╬╬╖│╬╖╖╓╬╪│╓╣╣╣╣╣╣╣╬      ╟╣╣╬    ╟╣╣╣ ╒╣╣╖╗╣╣╣╗   ╣╣╣ ╣╣╣╣╣╣ ╟╣╣╖   ╣╣╣
+ ╬╬╬╬┐  ╙╬╬╬╬│╓╣╣╣╝╜  ╫╣╣╣╬      ╟╣╣╬    ╟╣╣╣ ╟╣╣╣╙ ╙╣╣╣  ╣╣╣ ╙╟╣╣╜╙  ╫╣╣  ╟╣╣
+ ╬╬╬╬┐     ╙╬╬╣╣      ╫╣╣╣╬      ╟╣╣╬    ╟╣╣╣ ╟╣╣╬   ╣╣╣  ╣╣╣  ╟╣╣     ╣╣╣┌╣╣╜
+ ╬╬╬╜       ╬╬╣╣      ╙╝╣╣╬      ╙╣╣╣╗╖╓╗╣╣╣╜ ╟╣╣╬   ╣╣╣  ╣╣╣  ╟╣╣╦╓    ╣╣╣╣╣
+ ╙   ╓╦╖    ╬╬╣╣   ╓╗╗╖            ╙╝╣╣╣╣╝╜   ╘╝╝╜   ╝╝╝  ╝╝╝   ╙╣╣╣    ╟╣╣╣
+   ╩╬╬╬╬╬╬╦╦╬╬╣╣╗╣╣╣╣╣╣╣╝                                             ╫╣╣╣╣
+      ╙╬╬╬╬╬╬╬╣╣╣╣╣╣╝╜
+          ╙╬╬╬╣╣╣╜
+             ╙
+
+ Version information:
+  ml-agents: 1.0.0,
+  ml-agents-envs: 1.0.0,
+  Communicator API: 1.5.0,
+  PyTorch: 2.3.1+cu121
+D:\RocketProject\RocketProject\Rocket Project\venv\lib\site-packages\torch\__init__.py:749: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at ..\torch\csrc\tensor\python_tensor.cpp:433.)
+  _C._set_default_tensor_type(t)
+[INFO] Listening on port 5004. Start training by pressing the Play button in the Unity Editor.
+[INFO] Connected to Unity environment with package version 2.0.1 and communication version 1.5.0
+[INFO] Connected new brain: RocketLanding?team=0
+[INFO] Hyperparameters for behavior name RocketLanding: 
+        trainer_type:   ppo
+        hyperparameters:
+          batch_size:   1024
+          buffer_size:  10240
+          learning_rate:        0.0003
+          beta: 0.0005
+          epsilon:      0.2
+          lambd:        0.99
+          num_epoch:    3
+          shared_critic:        False
+          learning_rate_schedule:       linear
+          beta_schedule:        linear
+          epsilon_schedule:     linear
+        checkpoint_interval:    500000
+        network_settings:
+          normalize:    True
+          hidden_units: 1024
+          num_layers:   5
+          vis_encode_type:      simple
+          memory:       None
+          goal_conditioning_type:       hyper
+          deterministic:        False
+        reward_signals:
+          extrinsic:
+            gamma:      0.99
+            strength:   1.0
+            network_settings:
+              normalize:        False
+              hidden_units:     128
+              num_layers:       2
+              vis_encode_type:  simple
+              memory:   None
+              goal_conditioning_type:   hyper
+              deterministic:    False
+        init_path:      results\newlanding11alt\RocketLanding\checkpoint.pt
+        keep_checkpoints:       5
+        even_checkpoints:       False
+        max_steps:      750000
+        time_horizon:   128
+        summary_freq:   20000
+        threaded:       False
+        self_play:      None
+        behavioral_cloning:     None
+[INFO] Initializing from results\newlanding11alt\RocketLanding\checkpoint.pt.
+[INFO] Starting training from step 0 and saving to results\newlanding12alt\RocketLanding.
+[INFO] RocketLanding. Step: 20000. Time Elapsed: 19.248 s. Mean Reward: 14.259. Std of Reward: 6.561. Training.
+[INFO] RocketLanding. Step: 40000. Time Elapsed: 26.755 s. No episode was completed since last summary. Training.
+[INFO] RocketLanding. Step: 60000. Time Elapsed: 36.512 s. Mean Reward: 54.429. Std of Reward: 0.000. Training.
+[INFO] RocketLanding. Step: 80000. Time Elapsed: 46.611 s. Mean Reward: 50.831. Std of Reward: 27.253. Training.
+[INFO] RocketLanding. Step: 100000. Time Elapsed: 54.953 s. Mean Reward: 41.197. Std of Reward: 22.728. Training.
+[INFO] RocketLanding. Step: 120000. Time Elapsed: 64.995 s. Mean Reward: 35.970. Std of Reward: 16.761. Training.
+[INFO] RocketLanding. Step: 140000. Time Elapsed: 73.517 s. Mean Reward: 55.494. Std of Reward: 21.898. Training.
+[INFO] RocketLanding. Step: 160000. Time Elapsed: 83.068 s. Mean Reward: 30.492. Std of Reward: 28.761. Training.
+[INFO] RocketLanding. Step: 180000. Time Elapsed: 91.995 s. Mean Reward: 20.502. Std of Reward: 20.047. Training.
+[INFO] RocketLanding. Step: 200000. Time Elapsed: 101.495 s. Mean Reward: 29.413. Std of Reward: 25.031. Training.
+[INFO] RocketLanding. Step: 220000. Time Elapsed: 109.228 s. Mean Reward: 56.798. Std of Reward: 24.018. Training.
+[INFO] RocketLanding. Step: 240000. Time Elapsed: 118.228 s. Mean Reward: 44.775. Std of Reward: 26.526. Training.
+[INFO] RocketLanding. Step: 260000. Time Elapsed: 127.494 s. Mean Reward: 49.623. Std of Reward: 18.785. Training.
+[INFO] RocketLanding. Step: 280000. Time Elapsed: 136.459 s. Mean Reward: 58.490. Std of Reward: 20.385. Training.
+[INFO] RocketLanding. Step: 300000. Time Elapsed: 146.268 s. Mean Reward: 56.056. Std of Reward: 25.058. Training.
+[INFO] RocketLanding. Step: 320000. Time Elapsed: 155.071 s. Mean Reward: 59.257. Std of Reward: 25.622. Training.
+[INFO] RocketLanding. Step: 340000. Time Elapsed: 164.295 s. Mean Reward: 54.640. Std of Reward: 24.590. Training.
+[INFO] RocketLanding. Step: 360000. Time Elapsed: 173.431 s. Mean Reward: 53.122. Std of Reward: 24.013. Training.
+[INFO] RocketLanding. Step: 380000. Time Elapsed: 183.062 s. Mean Reward: 43.068. Std of Reward: 27.797. Training.
+[INFO] RocketLanding. Step: 400000. Time Elapsed: 192.230 s. Mean Reward: 65.073. Std of Reward: 21.705. Training.
+[INFO] RocketLanding. Step: 420000. Time Elapsed: 201.558 s. Mean Reward: 45.013. Std of Reward: 23.220. Training.
+[INFO] RocketLanding. Step: 440000. Time Elapsed: 211.013 s. Mean Reward: 59.369. Std of Reward: 19.365. Training.
+[INFO] RocketLanding. Step: 460000. Time Elapsed: 220.101 s. Mean Reward: 42.522. Std of Reward: 20.502. Training.
+[INFO] RocketLanding. Step: 480000. Time Elapsed: 229.506 s. Mean Reward: 46.083. Std of Reward: 25.393. Training.
+[INFO] RocketLanding. Step: 500000. Time Elapsed: 238.554 s. Mean Reward: 68.728. Std of Reward: 12.767. Training.
+[INFO] Exported results\newlanding12alt\RocketLanding\RocketLanding-499895.onnx
+[INFO] RocketLanding. Step: 520000. Time Elapsed: 248.489 s. Mean Reward: 57.968. Std of Reward: 26.071. Training.
+[INFO] RocketLanding. Step: 540000. Time Elapsed: 256.352 s. Mean Reward: 61.567. Std of Reward: 16.509. Training.
+[INFO] RocketLanding. Step: 560000. Time Elapsed: 265.730 s. Mean Reward: 58.230. Std of Reward: 23.918. Training.
+[INFO] RocketLanding. Step: 580000. Time Elapsed: 275.067 s. Mean Reward: 68.802. Std of Reward: 13.139. Training.
+[INFO] RocketLanding. Step: 600000. Time Elapsed: 284.289 s. Mean Reward: 64.318. Std of Reward: 20.367. Training.
+[INFO] RocketLanding. Step: 620000. Time Elapsed: 293.713 s. Mean Reward: 54.251. Std of Reward: 19.787. Training.
+[INFO] RocketLanding. Step: 640000. Time Elapsed: 303.130 s. Mean Reward: 53.085. Std of Reward: 23.407. Training.
+[INFO] RocketLanding. Step: 660000. Time Elapsed: 312.445 s. Mean Reward: 62.029. Std of Reward: 19.912. Training.
+[INFO] RocketLanding. Step: 680000. Time Elapsed: 321.475 s. Mean Reward: 64.431. Std of Reward: 17.312. Training.
+[INFO] RocketLanding. Step: 700000. Time Elapsed: 330.829 s. Mean Reward: 63.200. Std of Reward: 19.943. Training.
+[INFO] RocketLanding. Step: 720000. Time Elapsed: 340.196 s. Mean Reward: 61.432. Std of Reward: 23.302. Training.
+[INFO] RocketLanding. Step: 740000. Time Elapsed: 349.384 s. Mean Reward: 59.415. Std of Reward: 21.280. Training.
+[INFO] Exported results\newlanding12alt\RocketLanding\RocketLanding-750105.onnx
+[INFO] Copied results\newlanding12alt\RocketLanding\RocketLanding-750105.onnx to results\newlanding12alt\RocketLanding.onnx.
+
+
+11/21/24:
+
+
