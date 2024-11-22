@@ -3,12 +3,13 @@ behaviors:
     trainer_type: ppo
     hyperparameters:
       batch_size: 1024 # number of experiences used per training update
-      buffer_size: 10240 # number of experiences stored in the replay buffer; the larger the buffer, the stable but slower the training
+      buffer_size: 20480 # number of experiences stored in the replay buffer; the larger the buffer, the stable but slower the training
       learning_rate: 3.0e-4 # step size for updating the model parameters; the smaller the learning rate, the slower but more stable the training
-      beta: 5.0e-4 # strength of the entropy regularization term; the larger the beta, the more exploration
+      beta: 1.0e-3 # strength of the entropy regularization term; the larger the beta, the more exploration
       epsilon: 0.2 # Clipping parameter for PPO; controls how much the policy can change during an update
-      lambd: 0.99 # (0-1) the higher, the less biased but more variable the estimate of the advantage function
+      lambd: 0.95 # (0-1) the higher, the less biased but more variable the estimate of the advantage function
       learning_rate_schedule: linear # learning rate schedule; options: constant, linear, exponential Note: decrease the learning rate over time to stabilize training
+      num_epoch:    3 # number of times the training loop is run per update
     network_settings:
       normalize: true # normalize the input states
       hidden_units: 1024 # number of units in the hidden layers (originally 256)

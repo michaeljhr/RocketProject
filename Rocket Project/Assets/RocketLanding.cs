@@ -91,9 +91,13 @@ public class RocketLanding : Agent
     float thrustVector = 0f;
     bool simulationRunning = false;
 
+    // timestamp for start of current run
+    private float startTime;
+
     void Fail(float penalty = -1, string message = "") {
         // float penalty = -Mathf.Log10(Mathf.Abs(rocketLandingVelocity) + 1);
         // Debug.Log("Fail penalty: " + penalty);
+        
         if (message != "") {
             Debug.Log(message);
         }
@@ -104,8 +108,34 @@ public class RocketLanding : Agent
     }
 
     void Success() {
-        Debug.Log("Landed");
-        SetReward(25f);
+        // also reward for faster landing
+        float timeToLand = Time.time - startTime;
+
+        // add on a reward for landing faster
+        // float reward = (10f / timeToLand) * 100;
+        // Debug.Log($"Time to land: {timeToLand}, reward: {reward + 10f}");
+        // SetReward(10f * reward);
+        // This is if the numerator was (10f / timeToLand) * 100; OLD METHOD, USE IF THE NEW BREAKS EVERYTHING
+        // 80 seconds = 12.5
+        // 70 seconds = 14.2
+        // 60 seconds = 16.6
+        // 50 seconds = 20
+        // 40 seconds = 25
+        // 30 seconds = 33.3
+        // 20 seconds = 50
+        // 10 seconds = 100
+
+        float reward = (60f / timeToLand) * 25;
+        Debug.Log($"Time to land: {timeToLand}, reward: {reward}");
+        SetReward(reward);
+        // This is if the numerator was (60f / timeToLand) * 25;
+        // 80 seconds = 18.75
+        // 70 seconds = 21.43
+        // 60 seconds = 25
+        // 50 seconds = 30
+
+        
+
         platformMesh.material = successMaterial;
         EndEpisode();
     }
@@ -209,6 +239,8 @@ public class RocketLanding : Agent
 
     public override void OnEpisodeBegin()
     {
+        startTime = Time.time;
+
         rb = GetComponent<Rigidbody>();
 
         // Debug.Log($"RB: {rb}");
@@ -349,7 +381,7 @@ public class RocketLanding : Agent
 
         Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
 
-        if (rocketLandingVelocity < -10.0f) {
+        if (rocketLandingVelocity < -7.0f) {
             float penalty = Mathf.Abs(rocketLandingVelocity) * -0.2f;
             Debug.Log("Fail penalty: " + penalty);
             Fail(penalty);

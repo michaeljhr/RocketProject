@@ -5356,8 +5356,9 @@ MonoBehaviour:
   airResistance: {fileID: 1953718540}
   showcaseRocket: {fileID: 2059313402}
   models:
-  - {fileID: 5022602860645237092, guid: 94dcd4a9041705f4bb1df41c46c5164b, type: 3}
   - {fileID: 5022602860645237092, guid: 1aee72239e5e5b1468f30c8b1b6338a1, type: 3}
+  - {fileID: 5022602860645237092, guid: ad1f17a3fd0410b419fca1633d2b5c42, type: 3}
+  - {fileID: 5022602860645237092, guid: 0aa08b5e703f97a429849d613375c78e, type: 3}
   - {fileID: 0}
   modelDropdown: {fileID: 1414209681}
   manualControlButton: {fileID: 1796735613}
@@ -9672,6 +9673,8 @@ MonoBehaviour:
     - m_Text: ai model 1
       m_Image: {fileID: 0}
     - m_Text: ai model 3
+      m_Image: {fileID: 0}
+    - m_Text: ai model 11
       m_Image: {fileID: 0}
     - m_Text: manual
       m_Image: {fileID: 0}

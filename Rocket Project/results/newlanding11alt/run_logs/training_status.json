@@ -2,31 +2,31 @@
     "RocketLanding": {
         "checkpoints": [
             {
-                "steps": 499978,
-                "file_path": "results\\newlanding11alt\\RocketLanding\\RocketLanding-499978.onnx",
-                "reward": 62.479009211063385,
-                "creation_time": 1731636907.0596957,
+                "steps": 499945,
+                "file_path": "results\\newlanding11alt\\RocketLanding\\RocketLanding-499945.onnx",
+                "reward": 64.74900992945129,
+                "creation_time": 1732236644.9210472,
                 "auxillary_file_paths": [
-                    "results\\newlanding11alt\\RocketLanding\\RocketLanding-499978.pt"
+                    "results\\newlanding11alt\\RocketLanding\\RocketLanding-499945.pt"
                 ]
             },
             {
-                "steps": 750218,
-                "file_path": "results\\newlanding11alt\\RocketLanding\\RocketLanding-750218.onnx",
-                "reward": null,
-                "creation_time": 1731637023.464656,
+                "steps": 750033,
+                "file_path": "results\\newlanding11alt\\RocketLanding\\RocketLanding-750033.onnx",
+                "reward": 63.05820816755295,
+                "creation_time": 1732236776.2648904,
                 "auxillary_file_paths": [
-                    "results\\newlanding11alt\\RocketLanding\\RocketLanding-750218.pt"
+                    "results\\newlanding11alt\\RocketLanding\\RocketLanding-750033.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 750218,
+            "steps": 750033,
             "file_path": "results\\newlanding11alt\\RocketLanding.onnx",
-            "reward": null,
-            "creation_time": 1731637023.464656,
+            "reward": 63.05820816755295,
+            "creation_time": 1732236776.2648904,
             "auxillary_file_paths": [
-                "results\\newlanding11alt\\RocketLanding\\RocketLanding-750218.pt"
+                "results\\newlanding11alt\\RocketLanding\\RocketLanding-750033.pt"
             ]
         }
     },
