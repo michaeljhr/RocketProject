@@ -35,6 +35,9 @@ Main Thruster:
     -F to ramp down main thruster value
     -5 seconds total to ramp up or down
 
+max: 1000 particles/sec
+min: 0 particles/sec
+
 */
 
 public class RocketLanding : Agent
@@ -50,6 +53,7 @@ public class RocketLanding : Agent
     public GameObject northThrusterParticles;
     public Transform southThruster;
     public GameObject southThrusterParticles;
+    public AudioSource thrustSound;
     // [TextArea(5, 10)]
     // public string description;
     [Header("Rocket Parameters")]
@@ -299,18 +303,27 @@ public class RocketLanding : Agent
         int rotateLeft = actions.DiscreteActions[4];
         int rotateRight = actions.DiscreteActions[5];
 
+        northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
+        southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
+        eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
+        westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
+
         // Rotate Rocket
         if (rotateNorth == 1) {
             rb.AddForceAtPosition(Vector3.right * steerThrust, northThruster.position);
+            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (rotateSouth == 1) {
             rb.AddForceAtPosition(Vector3.left * steerThrust, southThruster.position);
+            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (rotateWest == 1) {
             rb.AddForceAtPosition(Vector3.forward * steerThrust, westThruster.position);
+            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (rotateEast == 1) {
             rb.AddForceAtPosition(Vector3.back * steerThrust, eastThruster.position);
+            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
 
         if (rotateLeft == 1) {
@@ -345,6 +358,10 @@ public class RocketLanding : Agent
 
 
         thrust = Mathf.Clamp(thrust, 0, maxThrust);
+
+        float thrustVolume = Mathf.Clamp(thrust / maxThrust, 0, 1);
+        thrustSound.volume = thrustVolume;
+        mainThrusterParticles.GetComponent<ParticleSystem>().emissionRate = thrustVolume * 1000;
 
         if (fuel > 0) {
             rb.AddForce(transform.up * thrust);

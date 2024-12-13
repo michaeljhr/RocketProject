@@ -305,7 +305,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -315,7 +315,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -368,7 +368,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1069,7 +1069,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -6086,7 +6086,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -6096,7 +6096,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -6149,7 +6149,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -6850,7 +6850,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -13260,7 +13260,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5776903319328586859}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 8
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -13325,7 +13325,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -13335,7 +13335,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -13388,7 +13388,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -14089,7 +14089,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 500
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -20063,7 +20063,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -20073,7 +20073,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -20126,7 +20126,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -20827,7 +20827,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -25420,7 +25420,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -25430,7 +25430,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -25483,7 +25483,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -26184,7 +26184,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -30339,12 +30339,116 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 080f71e42c04005489579bb473998303, type: 3}
       insertIndex: -1
       addedObject: {fileID: 446743087335112606}
+    - targetCorrespondingSourceObject: {fileID: 5372484770557370365, guid: 080f71e42c04005489579bb473998303, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7197490422063373074}
   m_SourcePrefab: {fileID: 100100000, guid: 080f71e42c04005489579bb473998303, type: 3}
 --- !u!4 &1129793605386316043 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5960146646777154351, guid: 080f71e42c04005489579bb473998303, type: 3}
   m_PrefabInstance: {fileID: 6709066572376072740}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1699408399468920281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5372484770557370365, guid: 080f71e42c04005489579bb473998303, type: 3}
+  m_PrefabInstance: {fileID: 6709066572376072740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &7197490422063373074
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699408399468920281}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 19c104f42261cc14c9bba8e244940652, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5898041306640375669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 080f71e42c04005489579bb473998303, type: 3}
@@ -30470,13 +30574,14 @@ MonoBehaviour:
   simulationManager: {fileID: 0}
   mainThrusterParticles: {fileID: 5776903319328586859}
   eastThruster: {fileID: 7707324079018549885}
-  eastThrusterParticles: {fileID: 0}
+  eastThrusterParticles: {fileID: 348702087881956157}
   westThruster: {fileID: 3729191963253800215}
-  westThrusterParticles: {fileID: 0}
+  westThrusterParticles: {fileID: 8722059731120942462}
   northThruster: {fileID: 2288121615084140917}
-  northThrusterParticles: {fileID: 0}
+  northThrusterParticles: {fileID: 9154283061947438424}
   southThruster: {fileID: 7942228394860943829}
-  southThrusterParticles: {fileID: 0}
+  southThrusterParticles: {fileID: 2014885376654471644}
+  thrustSound: {fileID: 7197490422063373074}
   mass: 22200
   thrust: 0
   steerThrust: 150000
