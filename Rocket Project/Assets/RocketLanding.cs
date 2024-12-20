@@ -6,6 +6,7 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Policies;
 using Unity.Barracuda;
+using System;
 
 /*
 
@@ -60,6 +61,7 @@ public class RocketLanding : Agent
     public float mass = 22200;
     public float thrust = 0;
     public float steerThrust = 1000;
+    public float translationThrust = 1000;
     public float maxThrust = 6806000f;
     public float startingFuel = 200000;
     public float thrustIncreaseRate = 1000;
@@ -90,7 +92,10 @@ public class RocketLanding : Agent
     private float lastRotationX = 0;
     private float lastRotationY = 90;
     private float lastRotationZ = 0;
+
+    private float lastPositionX = 0;
     private float lastPositionY = 2000;
+    private float lastPositionZ = 0;
 
     float thrustVector = 0f;
     bool simulationRunning = false;
@@ -188,6 +193,39 @@ public class RocketLanding : Agent
             Fail(-1f, "Below platform");
         }
 
+        // Check if the rocket drifts away from the platform
+        float tolerance = 45f;
+        float distanceX = Mathf.Abs(transform.localPosition.x - platform.transform.localPosition.x);
+        float lastDistanceX = Mathf.Abs(lastPositionX - platform.transform.localPosition.x);
+        float distanceZ = Mathf.Abs(transform.localPosition.z - platform.transform.localPosition.z);
+        float lastDistanceZ = Mathf.Abs(lastPositionZ - platform.transform.localPosition.z);
+        if ((distanceX < lastDistanceX || distanceX < tolerance) && (distanceZ < lastDistanceZ || distanceZ < tolerance)) {
+            AddReward(0.0001f);
+        } else if (distanceX == lastDistanceX || distanceZ == lastDistanceZ) {
+            AddReward(0);
+        } else {
+            Fail(-1f, "Drifted away from platform");
+        }
+
+
+        // Check if the rocket is rotating away from upright position
+        // TODO: re-enable this once the AI properly learned translation and is ready for rotation
+        // float toleranceRotation = 5.0f;
+        // float xAngle = Mathf.Abs(transform.localRotation.x);
+        // float xLastAngle = Mathf.Abs(lastRotationX);
+        // float yAngle = Mathf.Abs(transform.localRotation.y);
+        // float yLastAngle = Mathf.Abs(lastRotationY);
+        // float zAngle = Mathf.Abs(transform.localRotation.z);
+        // float zLastAngle = Mathf.Abs(lastRotationZ);
+        // if ((xAngle < xLastAngle || xAngle < toleranceRotation) && (yAngle < yLastAngle || yAngle < toleranceRotation) && (zAngle < zLastAngle || zAngle < toleranceRotation)) {
+        //     AddReward(0.0001f);
+        // } else if (Mathf.Abs(transform.localRotation.x) == lastRotationX || Mathf.Abs(transform.localRotation.y) == lastRotationY || Mathf.Abs(transform.localRotation.z) == lastRotationZ) {
+        //     AddReward(0);
+        // } else {
+        //     Fail(-1f, "Rocket is rotating away from upright position");
+        // }
+
+
 
         // if (rb.velocity.y < -10f){
         //     SetReward(rb.velocity.y * 0.05f);
@@ -262,12 +300,21 @@ public class RocketLanding : Agent
             float initialPositionY = float.Parse(simulationManager.positionY.text);
             float initialPositionZ = float.Parse(simulationManager.positionZ.text);
             transform.localPosition = new Vector3(initialPositionX, initialPositionY, initialPositionZ);
+            lastPositionX = initialPositionX;
+            lastPositionY = initialPositionY;
+            lastPositionZ = initialPositionZ;
         } else {
             // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
-            transform.localPosition = new Vector3(0, 500f, 0);
+            transform.localPosition = new Vector3(UnityEngine.Random.Range(-100, 100), 500f, UnityEngine.Random.Range(-100, 100));
+            lastPositionX = 0;
+            lastPositionY = 500f;
+            lastPositionZ = 0;
         }
+
+        // randomize the x and z of the platform (-900, 900)
+        platform.localPosition = new Vector3(UnityEngine.Random.Range(-100, 100), 0, UnityEngine.Random.Range(-100, 100));
         
-        rb.velocity = new Vector3(0, Random.Range(-2f, -5f), 0);
+        rb.velocity = new Vector3(0, UnityEngine.Random.Range(-2f, -5f), 0);
         transform.localRotation = Quaternion.identity;
         lastRotationX = 0;
         lastRotationY = 90;
@@ -303,6 +350,11 @@ public class RocketLanding : Agent
         int rotateLeft = actions.DiscreteActions[4];
         int rotateRight = actions.DiscreteActions[5];
 
+        int translateNorth = actions.DiscreteActions[6];
+        int translateEast = actions.DiscreteActions[7];
+        int translateSouth = actions.DiscreteActions[8];
+        int translateWest = actions.DiscreteActions[9];
+
         northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
         southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
         eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
@@ -331,6 +383,25 @@ public class RocketLanding : Agent
         }
         if (rotateRight == 1) {
             rb.AddTorque(Vector3.down * torqueAmount);
+        }
+
+        // Translate Rocket
+        if (translateNorth == 1) {
+            // apply force to the whole rocket
+            rb.AddForce(Vector3.forward * translationThrust);
+            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        }
+        if (translateSouth == 1) {
+            rb.AddForce(Vector3.back * translationThrust);
+            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        }
+        if (translateWest == 1) {
+            rb.AddForce(Vector3.left * translationThrust);
+            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        }
+        if (translateEast == 1) {
+            rb.AddForce(Vector3.right * translationThrust);
+            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
 
         
@@ -430,6 +501,10 @@ public class RocketLanding : Agent
         discreteActionsOut[4] = Input.GetKey(KeyCode.Q) ? 1 : 0;
         discreteActionsOut[5] = Input.GetKey(KeyCode.E) ? 1 : 0;
 
+        discreteActionsOut[6] = Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
+        discreteActionsOut[7] = Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+        discreteActionsOut[8] = Input.GetKey(KeyCode.DownArrow) ? 1 : 0;
+        discreteActionsOut[9] = Input.GetKey(KeyCode.LeftArrow) ? 1 : 0;
 
         var continuousActionsOut = actionsOut.ContinuousActions;
 

@@ -30502,7 +30502,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &5270789024010833985
 BoxCollider:
@@ -30542,7 +30542,7 @@ MonoBehaviour:
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 1
-      BranchSizes: 020000000200000002000000020000000200000002000000
+      BranchSizes: 02000000020000000200000002000000020000000200000002000000020000000200000002000000
     VectorActionSize: 
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
@@ -30585,6 +30585,7 @@ MonoBehaviour:
   mass: 22200
   thrust: 0
   steerThrust: 150000
+  translationThrust: 1000000
   maxThrust: 6806000
   startingFuel: 200000
   thrustIncreaseRate: 1000000
