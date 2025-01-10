@@ -25006,7 +25006,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8814287228562852912}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -30251,15 +30251,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fd3c8792b9c6f5458df8e523dffb8d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.048
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fd3c8792b9c6f5458df8e523dffb8d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.6
+      value: -4.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fd3c8792b9c6f5458df8e523dffb8d8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.14199999
+      value: -0.142
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fd3c8792b9c6f5458df8e523dffb8d8, type: 3}
       propertyPath: m_LocalRotation.w

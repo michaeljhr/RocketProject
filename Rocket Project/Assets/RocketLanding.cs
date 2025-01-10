@@ -194,7 +194,7 @@ public class RocketLanding : Agent
         }
 
         // Check if the rocket drifts away from the platform
-        float tolerance = 45f;
+        float tolerance = 25f;
         float distanceX = Mathf.Abs(transform.localPosition.x - platform.transform.localPosition.x);
         float lastDistanceX = Mathf.Abs(lastPositionX - platform.transform.localPosition.x);
         float distanceZ = Mathf.Abs(transform.localPosition.z - platform.transform.localPosition.z);
