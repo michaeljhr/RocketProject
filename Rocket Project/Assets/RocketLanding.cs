@@ -100,6 +100,9 @@ public class RocketLanding : Agent
     float thrustVector = 0f;
     bool simulationRunning = false;
 
+    float lowestPosition = 2000;
+    float closestDistance = 2000;
+
     // timestamp for start of current run
     private float startTime;
 
@@ -111,8 +114,15 @@ public class RocketLanding : Agent
             Debug.Log(message);
         }
 
-        SetReward(penalty);
+        if (GetCumulativeReward() > 0) {
+            AddReward(-1f * GetCumulativeReward());
+        }
+
+        AddReward(penalty);
         platformMesh.material = failMaterial;
+
+        Debug.Log($"Failed with a cumulative reward of {GetCumulativeReward()}");
+
         EndEpisode();
     }
 
@@ -134,16 +144,20 @@ public class RocketLanding : Agent
         // 20 seconds = 50
         // 10 seconds = 100
 
-        float reward = (60f / timeToLand) * 25;
+        if (GetCumulativeReward() < 0) {
+            AddReward(-1f * GetCumulativeReward());
+        }
+
+        float reward = (60f / timeToLand) * 10;
         Debug.Log($"Time to land: {timeToLand}, reward: {reward}");
-        SetReward(reward);
+        AddReward(reward);
         // This is if the numerator was (60f / timeToLand) * 25;
         // 80 seconds = 18.75
         // 70 seconds = 21.43
         // 60 seconds = 25
         // 50 seconds = 30
 
-        
+        Debug.Log($"Succeeded with a cumulative reward of {GetCumulativeReward()}");
 
         platformMesh.material = successMaterial;
         EndEpisode();
@@ -179,33 +193,64 @@ public class RocketLanding : Agent
         }
 
         // Check if rocket went up
-        if (lastPositionY < transform.localPosition.y && GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly) {
-            // SetReward(-10f);
-            float penalty = -1f * Mathf.Clamp((transform.localPosition.y - lastPositionY), 0, 10);
+        // if (lastPositionY < transform.localPosition.y && GetComponent<BehaviorParameters>().BehaviorType != BehaviorType.HeuristicOnly) {
+        if (lastPositionY < transform.localPosition.y) {
+            // float penalty = -1f * Mathf.Clamp((transform.localPosition.y - lastPositionY), 0, 10);
 
+            // Fail(penalty * 1000 * 10, $"Rocket went up, penalty: {penalty * 1000 * 10} at distance: {distanceToPLatform}");
+            // Fail(-50, $"Rocket went up, penalty: {-50} at distance: {distanceToPLatform}");
 
-            Fail(penalty, $"Rocket went up, penalty: {penalty} at distance: {distanceToPLatform}");
+            AddReward(-0.01f);
         }
+        // if the rocket went up too much, fail completely
+        if (transform.localPosition.y > lowestPosition + 1) {
+            Stats.riseFails++;
+            Fail(-50f, $"Rocket went up too much, penalty: {-50} at distance: {distanceToPLatform}");
+        }
+
 
         // Check if rocket is below platform
         if (platform.localPosition.y - 10.0f > transform.localPosition.y) {
             // Debug.Log("Below platform");
-            Fail(-1f, "Below platform");
+            Stats.missFails++;
+            Fail(-50f, "Below platform");
         }
 
         // Check if the rocket drifts away from the platform
-        float tolerance = 25f;
+        float tolerance = 50f;
         float distanceX = Mathf.Abs(transform.localPosition.x - platform.transform.localPosition.x);
         float lastDistanceX = Mathf.Abs(lastPositionX - platform.transform.localPosition.x);
         float distanceZ = Mathf.Abs(transform.localPosition.z - platform.transform.localPosition.z);
         float lastDistanceZ = Mathf.Abs(lastPositionZ - platform.transform.localPosition.z);
-        if ((distanceX < lastDistanceX || distanceX < tolerance) && (distanceZ < lastDistanceZ || distanceZ < tolerance)) {
-            AddReward(0.0001f);
-        } else if (distanceX == lastDistanceX || distanceZ == lastDistanceZ) {
-            AddReward(0);
+        // if ((distanceX < lastDistanceX || distanceX < tolerance) && (distanceZ < lastDistanceZ || distanceZ < tolerance)) {
+        if ((distanceX < lastDistanceX) && (distanceZ < lastDistanceZ)) {
+            // AddReward(0.0001f);
+        // } else if  ((distanceX < lastDistanceX || distanceX < tolerance) || (distanceZ < lastDistanceZ || distanceZ < tolerance)) {
+        //     AddReward(0.0005f);
+        // } else if (distanceX == lastDistanceX || distanceZ == lastDistanceZ) {
+        //     AddReward(0);
         } else {
-            Fail(-1f, "Drifted away from platform");
+            AddReward(-0.001f);
+            // Fail(-1f, "Drifted away from platform");
         }
+
+        // if the rocket drifts too far away from the platform, fail
+        // if (distanceX > 400f || distanceZ > 400f) {
+        //     Stats.driftFails++;
+        //     Fail(-25f, "Drifted too far from platform");
+        // }
+
+        // drift error also if the current distance is 10 meters greater than the closest distance (x and z axis only)
+        if (Mathf.Abs(Vector2.Distance(new Vector2(transform.localPosition.x, transform.localPosition.z), new Vector2(platform.localPosition.x, platform.localPosition.z))) > closestDistance + 5f) {
+            Stats.driftFails++;
+            Fail(-25f, "Drifted too far from platform");
+        }
+
+        // if (Mathf.Abs(Vector3.Distance(transform.localPosition, platform.localPosition)) > closestDistance + 5f) {
+        //     Stats.driftFails++;
+        //     Fail(-25f, "Drifted too far from platform");
+        // }
+        
 
 
         // Check if the rocket is rotating away from upright position
@@ -270,6 +315,20 @@ public class RocketLanding : Agent
         lastRotationZ = transform.localRotation.z;
         lastPositionY = transform.localPosition.y;
         lastVerticalVelocity = rb.velocity.y;
+
+        if (transform.localPosition.y < lowestPosition) {
+            lowestPosition = transform.localPosition.y;
+        }
+
+        // Mathf.Distance (x and z only)
+        if (Mathf.Abs(Vector2.Distance(new Vector2(transform.localPosition.x, transform.localPosition.z), new Vector2(platform.localPosition.x, platform.localPosition.z))) < closestDistance) {
+            closestDistance = Mathf.Abs(Vector2.Distance(new Vector2(transform.localPosition.x, transform.localPosition.z), new Vector2(platform.localPosition.x, platform.localPosition.z)));
+        }
+
+        // if (Mathf.Abs(Vector3.Distance(transform.localPosition, platform.localPosition)) < closestDistance) {
+        //     closestDistance = Mathf.Abs(Vector3.Distance(transform.localPosition, platform.localPosition));
+        // }
+
     }
 
     void Start() {
@@ -281,6 +340,8 @@ public class RocketLanding : Agent
 
     public override void OnEpisodeBegin()
     {
+        lowestPosition = 2000;
+        closestDistance = 2000;
         startTime = Time.time;
 
         rb = GetComponent<Rigidbody>();
@@ -312,7 +373,7 @@ public class RocketLanding : Agent
         }
 
         // randomize the x and z of the platform (-900, 900)
-        platform.localPosition = new Vector3(UnityEngine.Random.Range(-100, 100), 0, UnityEngine.Random.Range(-100, 100));
+        platform.localPosition = new Vector3(UnityEngine.Random.Range(-300, 300), 0, UnityEngine.Random.Range(-300, 300));
         
         rb.velocity = new Vector3(0, UnityEngine.Random.Range(-2f, -5f), 0);
         transform.localRotation = Quaternion.identity;
@@ -361,47 +422,158 @@ public class RocketLanding : Agent
         westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 0;
 
         // Rotate Rocket
-        if (rotateNorth == 1) {
-            rb.AddForceAtPosition(Vector3.right * steerThrust, northThruster.position);
-            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
-        }
-        if (rotateSouth == 1) {
-            rb.AddForceAtPosition(Vector3.left * steerThrust, southThruster.position);
-            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
-        }
-        if (rotateWest == 1) {
-            rb.AddForceAtPosition(Vector3.forward * steerThrust, westThruster.position);
-            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
-        }
-        if (rotateEast == 1) {
-            rb.AddForceAtPosition(Vector3.back * steerThrust, eastThruster.position);
-            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
-        }
+        // if (rotateNorth == 1) {
+        //     rb.AddForceAtPosition(Vector3.right * steerThrust, northThruster.position);
+        //     northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        // }
+        // if (rotateSouth == 1) {
+        //     rb.AddForceAtPosition(Vector3.left * steerThrust, southThruster.position);
+        //     southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        // }
+        // if (rotateWest == 1) {
+        //     rb.AddForceAtPosition(Vector3.forward * steerThrust, westThruster.position);
+        //     westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        // }
+        // if (rotateEast == 1) {
+        //     rb.AddForceAtPosition(Vector3.back * steerThrust, eastThruster.position);
+        //     eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+        // }
 
-        if (rotateLeft == 1) {
-            rb.AddTorque(Vector3.up * torqueAmount);
-        }
-        if (rotateRight == 1) {
-            rb.AddTorque(Vector3.down * torqueAmount);
-        }
+        // if (rotateLeft == 1) {
+        //     rb.AddTorque(Vector3.up * torqueAmount);
+        // }
+        // if (rotateRight == 1) {
+        //     rb.AddTorque(Vector3.down * torqueAmount);
+        // }
+
+
+        // Correctional Layer
+        // // check the x and z distances to the platform
+        // float x_distance = transform.localPosition.x - platform.localPosition.x;
+        // float z_distance = transform.localPosition.z - platform.localPosition.z;
+
+        // float x_velocity = rb.velocity.x;
+        // float z_velocity = rb.velocity.z;
+
+        // if (Mathf.Abs(x_distance) > 25f) {
+        //     if (x_distance > 0) {
+        //         // translateWest = 0;
+        //         // translateEast = 0;
+        //         if (x_velocity < -10 && x_distance < 100) {
+        //             // translateEast = 1; // Objectively, this is the correct thruster
+                    
+        //             // AI reward and punishment if they made choice contradicting the comments
+        //             if (translateEast == 0) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateWest == 1) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 // AddReward(0.01f);
+        //             }
+        //         } else {
+        //             // translateWest = 1;
+        //             if (translateEast == 1) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateWest == 0) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 // AddReward(0.01f);
+        //             }
+        //         }
+        //     } else {
+        //         // translateEast = 0;
+        //         // translateWest = 0;
+
+        //         if (x_velocity > 10 && x_distance > -100) {
+        //             // translateWest = 1;
+        //             if (translateEast == 1) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateWest == 0) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 // AddReward(0.01f);
+        //             }
+        //         } else {
+        //             // translateEast = 1;
+        //             if (translateEast == 0) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateWest == 1) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 // AddReward(0.01f);
+        //             }
+        //         }
+        //     }
+        // }
+
+        // if (Mathf.Abs(z_distance) > 25f) {
+        //     if (z_distance > 0) {
+        //         // translateSouth = 0;
+        //         // translateNorth = 0;
+
+        //         if (z_velocity < -10 && z_distance < 100) {
+        //             // translateNorth = 1;
+        //             if (translateNorth == 0) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateSouth == 1) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 AddReward(0.01f);
+        //             }
+        //         } else {
+        //             // translateSouth = 1;
+        //             if (translateNorth == 1) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateSouth == 0) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 AddReward(0.01f);
+        //             }
+        //         }
+        //     } else {
+        //         // translateNorth = 0;
+        //         // translateSouth = 0;
+
+        //         if (z_velocity > 10 && z_distance > -100) {
+        //             // translateSouth = 1;
+        //             if (translateNorth == 1) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateSouth == 0) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 AddReward(0.01f);
+        //             }
+        //         } else {
+        //             // translateNorth = 1;
+        //             if (translateNorth == 0) {
+        //                 AddReward(-0.01f);
+        //             } else if (translateSouth == 1) {
+        //                 AddReward(-0.01f);
+        //             } else {
+        //                 AddReward(0.01f);
+        //             }
+        //         }
+        //     }
+        // }
+
 
         // Translate Rocket
         if (translateNorth == 1) {
             // apply force to the whole rocket
             rb.AddForce(Vector3.forward * translationThrust);
-            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (translateSouth == 1) {
             rb.AddForce(Vector3.back * translationThrust);
-            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (translateWest == 1) {
             rb.AddForce(Vector3.left * translationThrust);
-            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (translateEast == 1) {
             rb.AddForce(Vector3.right * translationThrust);
-            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
 
         
@@ -443,6 +615,7 @@ public class RocketLanding : Agent
             }
         } else  {
             // Debug.Log("Out of fuel");
+            Stats.fuelFails++;
             Fail(-1, "Out of fuel");
         }
         
@@ -472,8 +645,10 @@ public class RocketLanding : Agent
         if (rocketLandingVelocity < -7.0f) {
             float penalty = Mathf.Abs(rocketLandingVelocity) * -0.2f;
             Debug.Log("Fail penalty: " + penalty);
+            Stats.crashFails++;
             Fail(penalty);
         } else {
+            Stats.success++;
             Success();
         }
 
@@ -519,5 +694,77 @@ public class RocketLanding : Agent
         heuristicThrust = Mathf.Clamp(heuristicThrust, -1f, 1f);
 
         continuousActionsOut[0] = heuristicThrust;
+
+
+        // Correctional Layer
+
+        if (rb.velocity.y >= 0) {
+            continuousActionsOut[0] = 0;
+        }
+
+
+        // check the x and z distances to the platform
+        float x_distance = transform.localPosition.x - platform.localPosition.x;
+        float z_distance = transform.localPosition.z - platform.localPosition.z;
+
+        float x_velocity = rb.velocity.x;
+        float z_velocity = rb.velocity.z;
+
+        if (Mathf.Abs(x_distance) > 2f) {
+            if (x_distance > 0) {
+                discreteActionsOut[7] = 0;
+                discreteActionsOut[9] = 0;
+                if (x_velocity < -10 && x_distance < 100) {
+                    discreteActionsOut[7] = 1;
+                } else {
+                    discreteActionsOut[9] = 1;
+                }
+            } else {
+                discreteActionsOut[7] = 0;
+                discreteActionsOut[9] = 0;
+
+                if (x_velocity > 10 && x_distance > -100) {
+                    discreteActionsOut[9] = 1;
+                } else {
+                    discreteActionsOut[7] = 1;
+                }
+            }
+        } else {
+            // in the inner ring, brake if exceeding a speed of 2m/s in the wrong direction
+            if (x_distance > 0 && x_velocity < -2) {
+                discreteActionsOut[7] = 1;
+            } else if (x_distance < 0 && x_velocity > 2) {
+                discreteActionsOut[9] = 1;
+            }
+        }
+
+        if (Mathf.Abs(z_distance) > 2f) {
+            if (z_distance > 0) {
+                discreteActionsOut[6] = 0;
+                discreteActionsOut[8] = 0;
+
+                if (z_velocity < -10 && z_distance < 100) {
+                    discreteActionsOut[6] = 1;
+                } else {
+                    discreteActionsOut[8] = 1;
+                }
+            } else {
+                discreteActionsOut[6] = 0;
+                discreteActionsOut[8] = 0;
+
+                if (z_velocity > 10 && z_distance > -100) {
+                    discreteActionsOut[8] = 1;
+                } else {
+                    discreteActionsOut[6] = 1;
+                }
+            }
+        } else {
+            // in the inner ring, brake if exceeding a speed of 2m/s in the wrong direction
+            if (z_distance > 0 && z_velocity < -2) {
+                discreteActionsOut[6] = 1;
+            } else if (z_distance < 0 && z_velocity > 2) {
+                discreteActionsOut[8] = 1;
+            }
+        }
     }
 }
