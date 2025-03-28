@@ -241,9 +241,15 @@ public class RocketLanding : Agent
         // }
 
         // drift error also if the current distance is 10 meters greater than the closest distance (x and z axis only)
-        if (Mathf.Abs(Vector2.Distance(new Vector2(transform.localPosition.x, transform.localPosition.z), new Vector2(platform.localPosition.x, platform.localPosition.z))) > closestDistance + 5f) {
+        Vector2 currentRocket = new Vector2(transform.localPosition.x, transform.localPosition.z);
+        Vector2 currentPlatform = new Vector2(platform.localPosition.x, platform.localPosition.z);
+        float currentDistance = Vector2.Distance(currentRocket, currentPlatform);
+
+        if (Mathf.Abs(currentDistance) > closestDistance && Mathf.Abs(currentDistance) > 10f) {
             Stats.driftFails++;
-            Fail(-25f, "Drifted too far from platform");
+            Fail(-50f, "Drifted too far from platform");
+        } else if (Mathf.Abs(currentDistance) < closestDistance) { // if you get closer than before, reward
+            AddReward(0.08f);
         }
 
         // if (Mathf.Abs(Vector3.Distance(transform.localPosition, platform.localPosition)) > closestDistance + 5f) {
