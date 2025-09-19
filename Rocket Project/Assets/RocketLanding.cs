@@ -563,6 +563,51 @@ public class RocketLanding : Agent
         // }
 
 
+        // Translation Validation
+        float x_distance = transform.localPosition.x - platform.localPosition.x;
+        float z_distance = transform.localPosition.z - platform.localPosition.z;
+
+        float x_velocity = rb.velocity.x;
+        float z_velocity = rb.velocity.z;
+
+
+        if (transform.localPosition.x > platform.localPosition.x) {
+            // objectively, the correct thruster to use is translateWest
+            translateWest = 1;
+            translateEast = 0;
+            if (x_velocity < -5f && x_distance < 150f) { // Braking
+                translateWest = 0;
+                translateEast = 1;
+            }
+        } else if (transform.localPosition.x < platform.localPosition.x) {
+            // objectively, the correct thruster to use is translateEast
+            translateWest = 0;
+            translateEast = 1;
+            if (x_velocity > 5f && x_distance > -150f) { // Braking
+                translateWest = 1;
+                translateEast = 0;
+            }
+        }
+
+        if (transform.localPosition.z > platform.localPosition.z) {
+            // objectively, the correct thruster to use is translateSouth
+            translateNorth = 0;
+            translateSouth = 1;
+            if (z_velocity < -5f && z_distance < 150f) { // Braking
+                translateNorth = 1;
+                translateSouth = 0;
+            }
+        } else if (transform.localPosition.z < platform.localPosition.z) {
+            // objectively, the correct thruster to use is translateNorth
+            translateNorth = 1;
+            translateSouth = 0;
+            if (z_velocity > 5f && z_distance > -150f) { // Braking
+                translateNorth = 0;
+                translateSouth = 1;
+            }
+        }
+
+
         // Translate Rocket
         if (translateNorth == 1) {
             // apply force to the whole rocket
@@ -588,10 +633,32 @@ public class RocketLanding : Agent
             
             
         // }
+
+        // Main Thruster Validation
+        float y_distance = transform.localPosition.y - platform.localPosition.y;
+        float y_velocity = rb.velocity.y;
+
+        mainThrust = actions.ContinuousActions[0];
+
+        if (y_velocity > 0) {
+            mainThrust = 0;
+        } else if (y_velocity < -10f) {
+            mainThrust = 1.0f;
+        }
+
+        // Optimal thrust based on distance and velocity
+        // - if higher up, more thrust
+        // - if falling faster, more thrust
+        // - y = 1/500 * x * z clamped to 0-1 for y
+        // float optimalThrust = 1/500 * y_distance * Mathf.Abs(y_velocity);
+        // optimalThrust = Mathf.Clamp(optimalThrust, 0f, 1f);
+
+        // mainThrust = optimalThrust;
+
         
 
         //Huristic is on or off by pressing R and F, ai should be doing the same way.
-        mainThrust = actions.ContinuousActions[0];
+        
         // Debug.Log($"mainThrust: {mainThrust}");
         
         // if (mainThrust > 0) {
