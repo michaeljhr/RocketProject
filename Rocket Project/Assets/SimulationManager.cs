@@ -164,7 +164,11 @@ public class SimulationManager : MonoBehaviour
     public void ResetRocket() {
         rocket.GetComponent<RocketLanding>().EndEpisode();
         if (useInitialSpawn) {
-            rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
+            // rocket.transform.localPosition= new Vector3(float.Parse(positionX.text), float.Parse(positionY.text), float.Parse(positionZ.text));
+            // rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
+            // rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
+
+            rocket.transform.localPosition= new Vector3(UnityEngine.Random.Range(-200, 200), 1000f, UnityEngine.Random.Range(-200, 200));
             rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
             rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
         }

@@ -81,7 +81,7 @@ public class RocketLanding : Agent
     public Material successMaterial;
     public Material failMaterial;
     public MeshRenderer platformMesh;
-    Rigidbody rb;
+    public Rigidbody rb;
 
     float mainThrust = 0;
     private float heuristicThrust = 0;
@@ -245,7 +245,7 @@ public class RocketLanding : Agent
         Vector2 currentPlatform = new Vector2(platform.localPosition.x, platform.localPosition.z);
         float currentDistance = Vector2.Distance(currentRocket, currentPlatform);
 
-        if (Mathf.Abs(currentDistance) > closestDistance && Mathf.Abs(currentDistance) > 10f) {
+        if (Mathf.Abs(currentDistance) > closestDistance && Mathf.Abs(currentDistance) > 30f) {
             Stats.driftFails++;
             Fail(-50f, "Drifted too far from platform");
         } else if (Mathf.Abs(currentDistance) < closestDistance) { // if you get closer than before, reward
@@ -372,9 +372,9 @@ public class RocketLanding : Agent
             lastPositionZ = initialPositionZ;
         } else {
             // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
-            transform.localPosition = new Vector3(UnityEngine.Random.Range(-100, 100), 500f, UnityEngine.Random.Range(-100, 100));
+            transform.localPosition = new Vector3(UnityEngine.Random.Range(-200, 200), 1000f, UnityEngine.Random.Range(-200, 200));
             lastPositionX = 0;
-            lastPositionY = 500f;
+            lastPositionY = 1000f;
             lastPositionZ = 0;
         }
 
@@ -612,19 +612,19 @@ public class RocketLanding : Agent
         if (translateNorth == 1) {
             // apply force to the whole rocket
             rb.AddForce(Vector3.forward * translationThrust);
-            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (translateSouth == 1) {
             rb.AddForce(Vector3.back * translationThrust);
-            northThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            southThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (translateWest == 1) {
             rb.AddForce(Vector3.left * translationThrust);
-            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
         if (translateEast == 1) {
             rb.AddForce(Vector3.right * translationThrust);
-            westThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
+            eastThrusterParticles.GetComponent<ParticleSystem>().emissionRate = 100;
         }
 
         
@@ -640,10 +640,22 @@ public class RocketLanding : Agent
 
         mainThrust = actions.ContinuousActions[0];
 
-        if (y_velocity > 0) {
+        // if (y_velocity > 0) {
+        //     mainThrust = 0;
+        // } else if (y_velocity < -10f) {
+        //     mainThrust = 1.0f;
+        // }
+
+        if(y_velocity > -2) {
             mainThrust = 0;
-        } else if (y_velocity < -10f) {
-            mainThrust = 1.0f;
+        }
+        else if(y_distance < 10){
+            float optimalThrust = (1/8000) * y_distance * Mathf.Abs(y_velocity);
+            optimalThrust = Mathf.Clamp(optimalThrust, 0f, 1f);
+            mainThrust = optimalThrust;
+        }
+        else if(y_distance > 450){
+            mainThrust = 0;
         }
 
         // Optimal thrust based on distance and velocity
@@ -715,7 +727,7 @@ public class RocketLanding : Agent
 
         Debug.Log($"Landed with a speed of {rocketLandingVelocity} m/s");
 
-        if (rocketLandingVelocity < -7.0f) {
+        if (rocketLandingVelocity < -20.0f) {
             float penalty = Mathf.Abs(rocketLandingVelocity) * -0.2f;
             Debug.Log("Fail penalty: " + penalty);
             Stats.crashFails++;
