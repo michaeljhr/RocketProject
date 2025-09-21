@@ -6,14 +6,14 @@ public class CameraController : MonoBehaviour
 {
     public Transform target; // The target object to orbit around
     public Vector3 offset = Vector3.zero; // Offset from the target's position
-    public float distance = 10.0f; // Initial distance from the target
+    public float distance = 20.0f; // Initial distance from the target
     public float xSpeed = 250.0f; // Speed of the camera's horizontal rotation
     public float ySpeed = 120.0f; // Speed of the camera's vertical rotation
     public float yMinLimit = -20f; // Minimum vertical angle
     public float yMaxLimit = 80f; // Maximum vertical angle
     public float zoomSpeed = 10.0f;
     public float distanceMin = 3f; // Minimum zoom distance
-    public float distanceMax = 15f; // Maximum zoom distance
+    public float distanceMax = 30f; // Maximum zoom distance
     public float panSpeed = 0.3f; // Speed of the panning movement
 
     private float x = 0.0f; // Current horizontal angle
@@ -31,6 +31,7 @@ public class CameraController : MonoBehaviour
         {
             GetComponent<Rigidbody>().freezeRotation = true;
         }
+        distanceMax = 100f;
     }
 
     void LateUpdate()

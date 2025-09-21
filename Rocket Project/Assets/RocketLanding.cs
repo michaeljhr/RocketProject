@@ -372,7 +372,7 @@ public class RocketLanding : Agent
             lastPositionZ = initialPositionZ;
         } else {
             // transform.localPosition = new Vector3(Random.Range(-8,8),1.5f,Random.Range(-8,8));
-            transform.localPosition = new Vector3(UnityEngine.Random.Range(-200, 200), 1000f, UnityEngine.Random.Range(-200, 200));
+            transform.localPosition = new Vector3(UnityEngine.Random.Range(-400, 400), 1000f, UnityEngine.Random.Range(-400, 400));
             lastPositionX = 0;
             lastPositionY = 1000f;
             lastPositionZ = 0;
@@ -646,7 +646,7 @@ public class RocketLanding : Agent
         //     mainThrust = 1.0f;
         // }
 
-        if(y_velocity > -2) {
+        if(y_velocity > -4) {
             mainThrust = 0;
         }
         else if(y_distance < 10){

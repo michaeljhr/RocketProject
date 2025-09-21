@@ -53,6 +53,10 @@ public class SimulationManager : MonoBehaviour
     public GameObject manualControlButton;
     public GameObject aiControlButton;
 
+    Vector3 freezePos;
+
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -63,12 +67,16 @@ public class SimulationManager : MonoBehaviour
 
         // ResetRocket();
         SetEnvironment((int)environment);
+        freezePos = new Vector3(UnityEngine.Random.Range(-400, 400), 1000f, UnityEngine.Random.Range(-400, 400));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(simulationRunning == false){
+            rocket.transform.localPosition = freezePos;
+            rocket.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
+        }
     }
 
     public void StartSimulation() {
@@ -168,7 +176,7 @@ public class SimulationManager : MonoBehaviour
             // rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
             // rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
 
-            rocket.transform.localPosition= new Vector3(UnityEngine.Random.Range(-200, 200), 1000f, UnityEngine.Random.Range(-200, 200));
+            rocket.transform.localPosition= new Vector3(UnityEngine.Random.Range(-400, 400), 1000f, UnityEngine.Random.Range(-400, 400));
             rocket.transform.localRotation = new Quaternion(float.Parse(rotationX.text), float.Parse(rotationY.text), float.Parse(rotationZ.text), 1);
             rocket.GetComponent<Rigidbody>().velocity = new Vector3(float.Parse(velocityX.text), float.Parse(velocityY.text), float.Parse(velocityZ.text));
         }
